@@ -1,0 +1,23 @@
+npm test
+#!/bin/sh
+. "$(dirname "$0")/_/husky.sh"
+
+# Get all staged files
+FILES=$(git diff --cached --name-only --diff-filter=ACMR | grep -E '\.(js|jsx|ts|tsx|json|css|scss|md)$')
+
+if [ -n "$FILES" ]; then
+  echo "🔍 Formatting staged files with Prettier..."
+  # Run prettier with set -e to abort on error
+  set -e
+  npx prettier --write $FILES
+  
+  # Check if prettier had an error
+  if [ $? -ne 0 ]; then
+    echo "❌ Prettier formatting failed. Commit aborted."
+    exit 1
+  fi
+  
+  # Re-add files since they may have been modified by Prettier
+  git add $FILES
+  echo "✅ Prettier formatting complete!"
+fi

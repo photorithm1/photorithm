@@ -1,0 +1,29 @@
+# Ignore artifacts:
+build
+coverage
+
+node_modules
+.next
+components/ui/*
+components.json
+
+# Exclude README related files and trigger files
+README.md
+README.*
+*.README.*
+
+
+# Next.js specific
+.next/
+out/
+public/
+next-env.d.ts
+.vercel/
+
+# Generated files
+*.generated.*
+.turbo/
+.swc/
+
+# Cache
+.eslintcache
