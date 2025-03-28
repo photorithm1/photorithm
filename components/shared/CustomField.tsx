@@ -1,18 +1,15 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import React from "react";
-import { Control, ControllerRenderProps } from "react-hook-form";
+import { Control } from "react-hook-form";
 import { z } from "zod";
 
 import { FormField, FormItem, FormControl, FormMessage, FormLabel } from "../ui/form";
 
 import { formSchema } from "./TransformationForm";
 
-type RenderProps = {
-  field: ControllerRenderProps<Control<z.infer<typeof formSchema>>, string>;
-};
-
 type CustomFieldProps = {
   control: Control<z.infer<typeof formSchema>> | undefined;
-  render: (props: RenderProps) => React.ReactNode;
+  render: (props: { field: any }) => React.ReactNode;
   name: keyof z.infer<typeof formSchema>;
   formLabel?: string;
   className?: string;

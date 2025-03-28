@@ -5,14 +5,13 @@ import { CldImage, CldUploadWidget, CloudinaryUploadWidgetResults } from "next-c
 import Image from "next/image";
 import { dataUrl, getImageSize } from "@/lib/utils";
 import { PlaceholderValue } from "next/dist/shared/lib/get-img-props";
-import { IImage } from "@/lib/database/models/image.model";
 import { toast } from "sonner";
 
 type MediaUploaderProps = {
   onValueChange: (value: string) => void;
-  setImage: React.Dispatch<any>; // Fix this soon
+  setImage: React.Dispatch<React.SetStateAction<TImage | null>>; // Fix this soon
   publicId?: string;
-  image: IImage;
+  image: TImage | null;
   type: string;
 };
 
@@ -28,13 +27,20 @@ export default function MediaUploader({ onValueChange, setImage, image, type, pu
     }
     const info = result.info;
 
-    setImage((prevState: IImage) => ({
-      ...prevState,
+    setImage({
       publicId: info?.public_id,
       width: info?.width,
       height: info?.height,
       secureURL: info.secure_url,
-    }));
+      title: "",
+      transformationURL: "",
+      transformationType: type,
+      config: undefined,
+      color: undefined,
+      aspectRatio: undefined,
+      isPrivate: false,
+      prompt: undefined,
+    });
     // console.log(result)
 
     onValueChange(info?.public_id);
@@ -67,8 +73,8 @@ export default function MediaUploader({ onValueChange, setImage, image, type, pu
           {publicId ? (
             <div className="cursor-pointer overflow-hidden rounded-[10px]">
               <CldImage
-                width={getImageSize(type, image, "width")}
-                height={getImageSize(type, image, "height")}
+                width={getImageSize(type, image!, "width")}
+                height={getImageSize(type, image!, "height")}
                 src={publicId}
                 alt="image"
                 sizes={"(max-width:767px) 100vh, 50vh"}

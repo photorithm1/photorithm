@@ -7,6 +7,7 @@ import React from "react";
 import { PlaceholderValue } from "next/dist/shared/lib/get-img-props";
 import { toast } from "sonner";
 
+// This component will only use publicId, height and width props of "image" and only work when transformationConfig props is not null
 export default function TransformedImage({
   image,
   type,
@@ -20,6 +21,7 @@ export default function TransformedImage({
 
   function downloadHandler(event: React.MouseEvent) {
     event.preventDefault();
+    if (!image) return;
     download(
       getCldImageUrl({
         width: image.width,

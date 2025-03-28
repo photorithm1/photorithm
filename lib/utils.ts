@@ -3,7 +3,6 @@ import qs from "qs";
 import { twMerge } from "tailwind-merge";
 
 import { aspectRatioOptions } from "@/constants";
-import { IImage } from "./database/models/image.model";
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
@@ -72,7 +71,7 @@ export function removeKeysFromQuery({ searchParams, keysToRemove }: RemoveUrlQue
 
 // GE IMAGE SIZE
 export type AspectRatioKey = keyof typeof aspectRatioOptions;
-export const getImageSize = (type: string, image: IImage, dimension: "width" | "height"): number => {
+export const getImageSize = (type: string, image: TImage, dimension: "width" | "height"): number => {
   if (type === "fill") {
     return aspectRatioOptions[image.aspectRatio as AspectRatioKey]?.[dimension] || 1000;
   }

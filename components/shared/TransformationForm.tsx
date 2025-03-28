@@ -8,7 +8,7 @@ import { CustomField } from "./CustomField";
 import { Form } from "@/components/ui/form";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { useEffect, useState, useTransition } from "react";
-import { AspectRatioKey, debounce, deepEqual, deepMergeObjects } from "@/lib/utils";
+import { AspectRatioKey, deepEqual, deepMergeObjects } from "@/lib/utils";
 import { Button } from "../ui/button";
 import { updateCredits } from "@/lib/actions/user.action";
 import MediaUploader from "./MediaUploader";
@@ -17,7 +17,7 @@ import { getCldImageUrl } from "next-cloudinary";
 import { addImage, updateImage } from "@/lib/actions/image.action";
 import { useRouter } from "next/navigation";
 import { InsufficientCreditsModal } from "./InsufficientCreditsModal";
-import { useToast } from "../ui/use-toast";
+import { toast } from "sonner";
 
 export const formSchema = z.object({
   title: z.string().trim().min(1, "Title is required"),
@@ -36,31 +36,29 @@ export default function TransformationForm({
   creditBalance,
   config = null,
 }: TransformationFormProps) {
-  const [image, setImage] = useState(data);
+  const [image, setImage] = useState<TImage | null>(data);
   const [newTransformation, setNewTransformation] = useState<Transformations | null>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isTransforming, setIsTransforming] = useState(false);
   const [transformationConfig, setTransformationConfig] = useState(config);
-  const [_, startTransition] = useTransition();
+  const [, startTransition] = useTransition();
   const router = useRouter();
-  const toast = useToast();
   const [selectFieldValue, setSelectFieldValue] = useState<AspectRatioKey | null>(null);
 
   const initialValues =
-    data && action === "Update"
+    image && action === "Update"
       ? {
-          title: data?.title,
-          aspectRatio: data?.aspectRatio,
-          color: data?.color,
-          prompt: data?.prompt,
-          publicId: data?.publicId,
-          privacy: data?.isPrivate ? "private" : "public",
+          title: image.title,
+          aspectRatio: image.aspectRatio,
+          color: image.color,
+          prompt: image.prompt,
+          publicId: image.publicId,
+          privacy: image.isPrivate ? "private" : "public",
         }
       : defaultValues;
   const transformationType = transformationTypes[type];
 
   useEffect(() => {
-    (window as any).setImage = setImage;
     if (image && (type === "restore" || type === "removeBackground")) {
       setNewTransformation(transformationType.config);
     }
@@ -73,66 +71,65 @@ export default function TransformationForm({
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
     // if image is not transformed or privacy field is not mutated
+    if (!image) return;
     setIsSubmitting(true);
-    if (data || image) {
-      const transformationURL = getCldImageUrl({
-        width: image?.width,
-        height: image?.height,
-        src: image?.publicId,
-        ...transformationConfig,
-      });
-      const imageData = {
-        title: values.title,
-        publicId: image?.publicId,
-        transformationType: type,
-        width: image?.width,
-        height: image?.height,
-        config: transformationConfig,
-        secureURL: image?.secureURL,
-        transformationURL,
-        aspectRatio: values.aspectRatio,
-        prompt: values.prompt,
-        color: values.color,
-        isPrivate: values.privacy === "private",
-      };
-      if (action === "Add") {
-        try {
-          const newImage = await addImage({
-            image: imageData,
-            userId,
-            path: "/",
-          });
-          if (newImage) {
-            form.reset();
-            setImage(data);
-            router.push(`/transformations/${newImage._id}`);
-          }
-        } catch (error) {
-          console.log("ERROR IN TRANSFORMATION FORM, ADD", error);
+    // Image is initially null but MediaUploader component will get image from user
+    const transformationURL = getCldImageUrl({
+      width: image.width,
+      height: image.height,
+      src: image.publicId, // image.publicId wont be undefined
+      ...transformationConfig,
+    });
+    const imageData = {
+      title: values.title,
+      publicId: image.publicId,
+      transformationType: type,
+      width: image.width,
+      height: image.height,
+      config: transformationConfig,
+      secureURL: image?.secureURL,
+      transformationURL,
+      aspectRatio: values.aspectRatio,
+      prompt: values.prompt,
+      color: values.color,
+      isPrivate: values.privacy === "private",
+    };
+    if (action === "Add") {
+      try {
+        const newImage = await addImage({
+          image: imageData,
+          userId,
+          path: "/",
+        });
+        if (newImage) {
+          // form.reset();
+          // setImage(data); // This two are not required since This component will unmount after the below navigation
+          router.push(`/transformations/${newImage._id}`);
         }
+      } catch (error) {
+        console.log("ERROR IN TRANSFORMATION FORM, ADD", error);
       }
-      if (action === "Update") {
-        try {
-          const updatedImage = await updateImage({
-            image: {
-              ...imageData,
-              _id: data._id,
-            },
-            userId,
-            path: `/transformations/${data._id}`,
-          });
-          if (updatedImage) {
-            form.reset();
-            setImage(data);
-            router.push(`/transformations/${updatedImage._id}`);
-          }
-        } catch (error) {
-          console.log("ERROR IN TRANSFORMATION FORM, UPDATE", error);
+    }
+    if (action === "Update") {
+      try {
+        const updatedImage = await updateImage({
+          image: {
+            ...imageData,
+            _id: image._id!,
+          },
+          userId,
+          path: `/transformations/${image._id}`,
+        });
+        if (updatedImage) {
+          // form.reset();
+          // setImage(data); // These twp are not required since This component will unmount after the below navigation
+          router.push(`/transformations/${updatedImage._id}`);
         }
+      } catch (error) {
+        console.log("ERROR IN TRANSFORMATION FORM, UPDATE", error);
       }
     }
   }
-  (window as any).globalForm = form;
 
   function onSelectFieldHandler(value: string, onFiledChange: (value: string) => undefined) {
     // const imageSize = aspectRatioOptions[value as AspectRatioKey]
@@ -147,21 +144,21 @@ export default function TransformationForm({
     return onFiledChange(value);
   }
 
-  function onSelectPrivacyFieldHandler(value: string, onFiledChange: (value: string) => undefined) {
-    setImage(prevState => ({
-      ...prevState,
-      isPrivate: value === "private",
-    }));
-    return onFiledChange(value);
-  }
+  // function onSelectPrivacyFieldHandler(value: string, onFiledChange: (value: string) => undefined) {
+  //   setImage((prevState:TImage) => ({
+  //     ...prevState,
+  //     isPrivate: value === "private",
+  //   }));
+  //   return onFiledChange(value);
+  // }
 
   function onInputChangeHandler(
     fieldName: string,
     value: string,
-    type: string,
+    type: "remove" | "recolor",
     onChangeField: (value: string) => void
   ) {
-    setNewTransformation((prevState: any) => ({
+    setNewTransformation(prevState => ({
       ...prevState,
       [type]: {
         ...prevState?.[type],
@@ -172,19 +169,27 @@ export default function TransformationForm({
   }
 
   async function onTransformHandler() {
+    if (image === null) return; // just to be safe
     if (!newTransformation || deepEqual(newTransformation, transformationConfig)) {
-      toast.toast({ description: "Please make some changes before applying transformations" });
+      toast("No changes made", {
+        description: "Please make some changes before applying transformations",
+        className: "error-toast",
+      });
       return;
     }
 
     if (type === "fill") {
       const imageSize = aspectRatioOptions[selectFieldValue!];
-      setImage((prevState: any) => ({
-        ...prevState,
-        aspectRatio: imageSize.aspectRatio,
-        width: imageSize.width,
-        height: imageSize.height,
-      }));
+      setImage(prevState =>
+        prevState
+          ? {
+              ...prevState,
+              aspectRatio: imageSize.aspectRatio,
+              width: imageSize.width,
+              height: imageSize.height,
+            }
+          : null
+      );
     }
 
     setIsTransforming(true);
@@ -193,8 +198,7 @@ export default function TransformationForm({
     startTransition(async () => {
       await updateCredits(userId, creditFee);
 
-      toast.toast({
-        title: "Transformed successfully",
+      toast("Transformed successfully", {
         description: "1 credit deducted from your account. Please save the image",
         duration: 5000,
         className: "success-toast",
@@ -220,7 +224,7 @@ export default function TransformationForm({
           formLabel="Privacy (Select whether your image is public or private)"
           className="w-full"
           render={({ field }) => (
-            <Select value={field.value} onValueChange={value => onSelectPrivacyFieldHandler(value, field.onChange)}>
+            <Select value={field.value} onValueChange={value => field.onChange(value)}>
               <SelectTrigger className="select-field">
                 <SelectValue placeholder="Select mode" />
               </SelectTrigger>
