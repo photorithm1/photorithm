@@ -56,7 +56,15 @@ export async function deleteImage(imageId: string) {
   try {
     await connectToDatabase();
 
-    await Image.findByIdAndDelete(imageId);
+    const image = await Image.findByIdAndDelete(imageId);
+
+    cloudinary.config({
+      cloud_name: process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME,
+      api_key: process.env.CLOUDINARY_API_KEY,
+      api_secret: process.env.CLOUDINARY_API_SECRET,
+      secure: true,
+    });
+    await cloudinary.uploader.destroy(image?.publicId as string);
   } catch (error) {
     handleError(error);
   } finally {
@@ -98,7 +106,7 @@ export async function getAllImages({
       secure: true,
     });
 
-    let expression = "folder=imaginify";
+    let expression = `folder=${process.env.CLOUDINARY_IMAGE_FOLDER}`;
 
     if (searchQuery) {
       expression += ` AND '%${searchQuery}%'`;

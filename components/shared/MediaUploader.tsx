@@ -61,7 +61,7 @@ export default function MediaUploader({ onValueChange, setImage, image, type, pu
 
   return (
     <CldUploadWidget
-      uploadPreset="jsm_imaginify"
+      uploadPreset={process.env.NEXT_PUBLIC_CLOUDINARY_IMAGE_PRESET}
       options={{ multiple: false, resourceType: "image" }}
       onSuccess={onUploadSuccessHandler}
       onError={onUploadErrorHandler}
