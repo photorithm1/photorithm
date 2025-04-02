@@ -8,7 +8,6 @@ export default function Layout({ children }: { children: React.ReactNode }) {
     <main className="root">
       <SideBar />
       <MobileNav />
-      <div className="text-8xl">yp</div>
 
       <div className="root-container">
         <div className="wrapper">{children}</div>

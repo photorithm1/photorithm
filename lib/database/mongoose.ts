@@ -25,7 +25,7 @@ export async function connectToDatabase() {
   cached.promise =
     cached.promise ||
     mongoose.connect(MONGODB_URL, {
-      dbName: "photorithm",
+      dbName: process.env.MONGODB_DATABASE_NAME!,
       bufferCommands: false,
     });
 

@@ -1,7 +1,7 @@
 import { Document, Model, Schema, model, models, Types } from "mongoose";
 
 export interface IImage {
-  _id: Types.ObjectId;
+  _id: Types.ObjectId | string;
   title: string;
   transformationType: string;
   publicId: string;

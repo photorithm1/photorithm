@@ -1,7 +1,7 @@
 import { Document, Model, Schema, Types, model, models } from "mongoose";
 
 export interface ITransaction {
-  _id: Types.ObjectId;
+  _id: Types.ObjectId | string;
   createdAt: Date;
   stripeId: string;
   amount: number;
