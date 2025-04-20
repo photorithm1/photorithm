@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Sheet, SheetContent, SheetTrigger, SheetClose } from "@/components/ui/sheet";
 import { DialogTitle } from "@radix-ui/react-dialog";
 import Link from "next/link";
@@ -13,21 +13,34 @@ import { navLinks } from "@/constants";
 export default function MobileNav() {
   const pathname = usePathname();
   const [menuOpen, setMenuOpen] = useState(false);
+  const [isMobile, setIsMobile] = useState(false);
+
+  // Check screen size on mount + resize
+  useEffect(() => {
+    const checkScreen = () => setIsMobile(window.innerWidth < 768);
+    checkScreen();
+
+    window.addEventListener("resize", checkScreen);
+    return () => window.removeEventListener("resize", checkScreen);
+  }, []);
+
+  if (!isMobile) return null; // Only render on mobile screens
 
   return (
     <header className="fixed top-0 left-0 w-full bg-gradient-to-r from-purple-600 to-indigo-600 shadow-lg z-50">
-      <div className="flex items-center justify-between px-6 py-4 md:px-10 lg:px-16">
+      <div className="flex items-center justify-between px-6 py-4">
         {/* Logo */}
         <Link href="/" className="flex items-center gap-2">
           <Image src="/assets/images/logo-text.svg" alt="logo" width={180} height={28} priority />
         </Link>
 
         {/* Navigation */}
-        <nav className="flex items-center gap-4">
+        <nav className="flex items-center gap-4 relative">
           <SignedIn>
-            <UserButton showName afterSignOutUrl="/" />
+            <div className="relative">
+              <UserButton afterSignOutUrl="/" />
+            </div>
 
-            {/* Mobile Menu Trigger */}
             <Sheet open={menuOpen} onOpenChange={setMenuOpen}>
               <SheetTrigger asChild>
                 <button
@@ -36,21 +49,14 @@ export default function MobileNav() {
                   aria-expanded={menuOpen ? "true" : "false"}
                 >
                   {[...Array(4)].map((_, i) => (
-                    <span
-                      key={i}
-                      className={`block h-1 w-8 bg-white rounded transition-all duration-300 ease-in-out ${
-                        menuOpen ? "rotate-45 origin-center" : ""
-                      }`}
-                    />
+                    <span key={i} className="block h-1 w-8 bg-white rounded transition-all duration-300 ease-in-out" />
                   ))}
                 </button>
               </SheetTrigger>
 
-              {/* Sheet Content */}
               <SheetContent side="left" className="w-72 sm:w-80 bg-white p-6 overflow-y-auto">
                 <DialogTitle className="sr-only">Navigation Menu</DialogTitle>
 
-                {/* Logo inside menu */}
                 <Image
                   src="/assets/images/logo-text.svg"
                   alt="logo"
@@ -60,14 +66,15 @@ export default function MobileNav() {
                   loading="lazy"
                 />
 
-                {/* Navigation Links */}
                 <ul className="flex flex-col gap-4">
                   {navLinks.map(link => {
                     const isActive = pathname.startsWith(link.route);
                     return (
                       <li
                         key={link.route}
-                        className={`flex items-center gap-3 ${isActive ? "text-purple-600 font-semibold" : "text-gray-700"}`}
+                        className={`flex items-center gap-3 ${
+                          isActive ? "text-purple-600 font-semibold" : "text-gray-700"
+                        }`}
                       >
                         <SheetClose asChild>
                           <Link href={link.route} className="flex items-center gap-3">
@@ -83,7 +90,6 @@ export default function MobileNav() {
             </Sheet>
           </SignedIn>
 
-          {/* Sign In Button for Guests */}
           <SignedOut>
             <Button asChild className="bg-white text-purple-600 px-4 py-2 rounded-lg font-semibold">
               <Link href="/sign-in">Sign In</Link>
