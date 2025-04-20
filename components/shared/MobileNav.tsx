@@ -1,60 +1,96 @@
 "use client";
 
-import React from "react";
-import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
+import React, { useState } from "react";
+import { Sheet, SheetContent, SheetTrigger, SheetClose } from "@/components/ui/sheet";
+import { DialogTitle } from "@radix-ui/react-dialog";
 import Link from "next/link";
 import Image from "next/image";
 import { SignedIn, SignedOut, UserButton } from "@clerk/nextjs";
-import { navLinks } from "@/constants";
 import { usePathname } from "next/navigation";
 import { Button } from "../ui/button";
+import { navLinks } from "@/constants";
 
 export default function MobileNav() {
   const pathname = usePathname();
+  const [menuOpen, setMenuOpen] = useState(false);
 
   return (
-    <header className="header">
-      <Link href={"/"} className="flex items-center gap-2 md:py-2">
-        <Image src={"/assets/images/logo-text.svg"} alt="logo" width={180} height={28} />
-      </Link>
+    <header className="fixed top-0 left-0 w-full bg-gradient-to-r from-purple-600 to-indigo-600 shadow-lg z-50">
+      <div className="flex items-center justify-between px-6 py-4 md:px-10 lg:px-16">
+        {/* Logo */}
+        <Link href="/" className="flex items-center gap-2">
+          <Image src="/assets/images/logo-text.svg" alt="logo" width={180} height={28} priority />
+        </Link>
 
-      <nav className="flex gap-2">
-        <SignedIn>
-          <UserButton showName afterSignOutUrl="/" />
-          <Sheet>
-            <SheetTrigger>
-              <Image src={"/assets/icons/menu.svg"} alt="menu" width={32} height={32} className="cursor-pointer" />
-            </SheetTrigger>
-            <SheetContent className="sheet-content sm:w-64">
-              <>
-                <Image src={"/assets/images/logo-text.svg"} alt="logo" width={152} height={23} />
-                <ul className="header-nav_elements">
+        {/* Navigation */}
+        <nav className="flex items-center gap-4">
+          <SignedIn>
+            <UserButton showName afterSignOutUrl="/" />
+
+            {/* Mobile Menu Trigger */}
+            <Sheet open={menuOpen} onOpenChange={setMenuOpen}>
+              <SheetTrigger asChild>
+                <button
+                  className="flex flex-col justify-center items-center w-8 h-8 space-y-1.5"
+                  aria-label="Toggle menu"
+                  aria-expanded={menuOpen ? "true" : "false"}
+                >
+                  {[...Array(4)].map((_, i) => (
+                    <span
+                      key={i}
+                      className={`block h-1 w-8 bg-white rounded transition-all duration-300 ease-in-out ${
+                        menuOpen ? "rotate-45 origin-center" : ""
+                      }`}
+                    />
+                  ))}
+                </button>
+              </SheetTrigger>
+
+              {/* Sheet Content */}
+              <SheetContent side="left" className="w-72 sm:w-80 bg-white p-6 overflow-y-auto">
+                <DialogTitle className="sr-only">Navigation Menu</DialogTitle>
+
+                {/* Logo inside menu */}
+                <Image
+                  src="/assets/images/logo-text.svg"
+                  alt="logo"
+                  width={152}
+                  height={23}
+                  className="mb-4"
+                  loading="lazy"
+                />
+
+                {/* Navigation Links */}
+                <ul className="flex flex-col gap-4">
                   {navLinks.map(link => {
-                    const isActive = link.route === pathname;
+                    const isActive = pathname.startsWith(link.route);
                     return (
                       <li
                         key={link.route}
-                        className={`${isActive && "gradient-text"} p-18 flex whitespace-nowrap text-dark`}
+                        className={`flex items-center gap-3 ${isActive ? "text-purple-600 font-semibold" : "text-gray-700"}`}
                       >
-                        <Link className="sidebar-link cursor-pointer" href={link.route}>
-                          <Image src={link.icon} alt="icon" width={24} height={24} />
-                          {link.label}
-                        </Link>
+                        <SheetClose asChild>
+                          <Link href={link.route} className="flex items-center gap-3">
+                            <Image src={link.icon} alt={link.label} width={24} height={24} />
+                            {link.label}
+                          </Link>
+                        </SheetClose>
                       </li>
                     );
                   })}
                 </ul>
-              </>
-            </SheetContent>
-          </Sheet>
-        </SignedIn>
+              </SheetContent>
+            </Sheet>
+          </SignedIn>
 
-        <SignedOut>
-          <Button asChild className="button bg-purple-gradient bg-cover">
-            <Link href={"/sign-in"}></Link>
-          </Button>
-        </SignedOut>
-      </nav>
+          {/* Sign In Button for Guests */}
+          <SignedOut>
+            <Button asChild className="bg-white text-purple-600 px-4 py-2 rounded-lg font-semibold">
+              <Link href="/sign-in">Sign In</Link>
+            </Button>
+          </SignedOut>
+        </nav>
+      </div>
     </header>
   );
 }
