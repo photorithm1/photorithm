@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect } from "react";
-import { checkoutCredits } from "@/lib/actions/transaction.action";
+import { checkoutCredits } from "@/actions/transaction.action";
 import { toast } from "sonner";
 import { Button } from "../ui/button";
 

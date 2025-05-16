@@ -10,11 +10,11 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { useEffect, useState, useTransition } from "react";
 import { AspectRatioKey, deepEqual, deepMergeObjects } from "@/lib/utils";
 import { Button } from "../ui/button";
-import { updateCredits } from "@/lib/actions/user.action";
+import { updateCredits } from "@/actions/user.action";
 import MediaUploader from "./MediaUploader";
 import TransformedImage from "./TransformedImage";
 import { getCldImageUrl } from "next-cloudinary";
-import { addImage, updateImage } from "@/lib/actions/image.action";
+import { addImage, updateImage } from "@/actions/image.action";
 import { useRouter } from "next/navigation";
 import { InsufficientCreditsModal } from "./InsufficientCreditsModal";
 import { toast } from "sonner";

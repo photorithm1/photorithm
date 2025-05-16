@@ -1,6 +1,6 @@
 import { Collection } from "@/components/shared/Collection";
 import { navLinks } from "@/constants";
-import { getAllImages } from "@/lib/actions/image.action";
+import { getAllImages } from "@/actions/image.action";
 import Image from "next/image";
 import Link from "next/link";
 import React from "react";
@@ -14,7 +14,7 @@ export default async function Home({ searchParams }: SearchParamProps) {
   return (
     <>
       <section className="home">
-        <h1 className="home-heading">Unleash Your Creative Vision with Imaginify</h1>
+        <h1 className="home-heading">Unleash Your Creative Vision with Photorithm</h1>
         <ul className="flex-center w-full gap-20">
           {navLinks.slice(1, 6).map(link => (
             <Link href={link.route} key={link.route} className="flex-center flex-col gap-2">

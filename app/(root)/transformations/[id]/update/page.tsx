@@ -4,8 +4,8 @@ import { notFound, redirect } from "next/navigation";
 import Header from "@/components/shared/Header";
 import TransformationForm from "@/components/shared/TransformationForm";
 import { transformationTypes } from "@/constants";
-import { getUserById } from "@/lib/actions/user.action";
-import { getImageById } from "@/lib/actions/image.action";
+import { getUserById } from "@/actions/user.action";
+import { getImageById } from "@/actions/image.action";
 
 const Page = async ({ params }: SearchParamProps) => {
   const { userId } = await auth();

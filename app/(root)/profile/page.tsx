@@ -4,8 +4,8 @@ import { redirect } from "next/navigation";
 
 import { Collection } from "@/components/shared/Collection";
 import Header from "@/components/shared/Header";
-import { getUserImages } from "@/lib/actions/image.action";
-import { getUserById } from "@/lib/actions/user.action";
+import { getUserImages } from "@/actions/image.action";
+import { getUserById } from "@/actions/user.action";
 
 const Profile = async ({ searchParams }: SearchParamProps) => {
   const page = Number((await searchParams)?.page) || 1;

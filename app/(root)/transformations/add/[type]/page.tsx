@@ -1,7 +1,7 @@
 import Header from "@/components/shared/Header";
 import TransformationForm from "@/components/shared/TransformationForm";
 import { transformationTypes } from "@/constants";
-import { getUserById } from "@/lib/actions/user.action";
+import { getUserById } from "@/actions/user.action";
 import { auth } from "@clerk/nextjs/server";
 import { notFound, redirect } from "next/navigation";
 import React from "react";
