@@ -31,7 +31,7 @@ export async function GET() {
     const expression = `uploaded_at<${fiveMinutesAgo}`;
     const { resources } = (await cloudinary.search
       .expression(expression)
-      .max_results(5)
+      .max_results(50)
       .execute()) as ResourceApiResponse;
 
     // Filter unwanted images which are not available in database
