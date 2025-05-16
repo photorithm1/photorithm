@@ -40,6 +40,7 @@ export default function MediaUploader({ onValueChange, setImage, image, type, pu
       aspectRatio: undefined,
       isPrivate: false,
       prompt: undefined,
+      author: "",
     });
     // console.log(result)
 

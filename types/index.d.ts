@@ -136,6 +136,7 @@ declare type TImage = {
   _id?: string;
   title: string;
   publicId: string;
+  author: string | TUser;
   transformationType: string;
   width: number;
   height: number;
@@ -146,4 +147,16 @@ declare type TImage = {
   prompt: string | undefined;
   color: string | undefined;
   isPrivate: boolean;
+};
+
+declare type TUser = {
+  _id: string;
+  clerkId: string;
+  email: string;
+  username: string;
+  photo: string;
+  firstName?: string;
+  lastName?: string;
+  planId: number;
+  creditBalance: number;
 };

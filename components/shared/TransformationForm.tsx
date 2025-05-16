@@ -94,6 +94,7 @@ export default function TransformationForm({
       color: values.color,
       isPrivate: values.privacy === "private",
     };
+
     if (action === "Add") {
       try {
         const newImage = await addImage({
@@ -110,6 +111,7 @@ export default function TransformationForm({
         console.log("ERROR IN TRANSFORMATION FORM, ADD", error);
       }
     }
+
     if (action === "Update") {
       try {
         const updatedImage = await updateImage({
@@ -132,25 +134,10 @@ export default function TransformationForm({
   }
 
   function onSelectFieldHandler(value: string, onFiledChange: (value: string) => undefined) {
-    // const imageSize = aspectRatioOptions[value as AspectRatioKey]
-    // setImage((prevState: any) => ({
-    //     ...prevState,
-    //     aspectRatio: imageSize.aspectRatio,
-    //     width: imageSize.width,
-    //     height: imageSize.height
-    // }))
     setSelectFieldValue(value as AspectRatioKey);
     setNewTransformation(transformationType.config);
     return onFiledChange(value);
   }
-
-  // function onSelectPrivacyFieldHandler(value: string, onFiledChange: (value: string) => undefined) {
-  //   setImage((prevState:TImage) => ({
-  //     ...prevState,
-  //     isPrivate: value === "private",
-  //   }));
-  //   return onFiledChange(value);
-  // }
 
   function onInputChangeHandler(
     fieldName: string,

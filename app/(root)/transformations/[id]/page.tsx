@@ -16,6 +16,11 @@ const ImageDetails = async ({ params }: SearchParamProps) => {
   let image;
   try {
     image = await getImageById(id);
+    if (!image) notFound();
+    if (typeof image.author === "string") notFound(); // image.author should be of type TUser since getImageById populates author field (This code was to satisfy ts)
+
+    if (image.isPrivate && image.author.clerkId !== userId) notFound();
+
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
   } catch (error: unknown) {
     notFound();
@@ -95,7 +100,7 @@ const ImageDetails = async ({ params }: SearchParamProps) => {
               <Link href={`/transformations/${image._id}/update`}>Update Image</Link>
             </Button>
 
-            <DeleteConfirmation imageId={image._id} />
+            <DeleteConfirmation imageId={image._id!} />
           </div>
         )}
       </section>

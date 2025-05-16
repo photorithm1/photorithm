@@ -9,7 +9,7 @@ import { redirect } from "next/navigation";
 import { v2 as cloudinary } from "cloudinary";
 
 // Add image
-export async function addImage({ image, userId, path }: AddImageParams) {
+export async function addImage({ image, userId, path }: AddImageParams): Promise<TImage | null> {
   try {
     await connectToDatabase();
 
@@ -23,15 +23,15 @@ export async function addImage({ image, userId, path }: AddImageParams) {
     });
 
     revalidatePath(path);
-
-    return JSON.parse(JSON.stringify(newImage));
+    return JSON.parse(JSON.stringify(newImage)) as TImage;
   } catch (error) {
     handleError(error);
+    return null;
   }
 }
 
 // Update image
-export async function updateImage({ image, userId, path }: UpdateImageParams) {
+export async function updateImage({ image, userId, path }: UpdateImageParams): Promise<TImage | null> {
   try {
     await connectToDatabase();
 
@@ -45,9 +45,10 @@ export async function updateImage({ image, userId, path }: UpdateImageParams) {
 
     revalidatePath(path);
 
-    return JSON.parse(JSON.stringify(updatedImage));
+    return JSON.parse(JSON.stringify(updatedImage)) as TImage;
   } catch (error) {
     handleError(error);
+    return null;
   }
 }
 
@@ -73,7 +74,7 @@ export async function deleteImage(imageId: string) {
 }
 
 // get image by Id
-export async function getImageById(imageId: string) {
+export async function getImageById(imageId: string): Promise<TImage | null> {
   try {
     await connectToDatabase();
 
@@ -83,6 +84,7 @@ export async function getImageById(imageId: string) {
     return JSON.parse(JSON.stringify(image));
   } catch (error) {
     handleError(error);
+    return null;
   }
 }
 
@@ -133,12 +135,13 @@ export async function getAllImages({
     const savedImages = await Image.find().countDocuments();
 
     return {
-      data: JSON.parse(JSON.stringify(images)),
+      data: JSON.parse(JSON.stringify(images)) as TImage[],
       totalImages: Math.ceil(savedImages / limit),
       savedImages,
     };
   } catch (error) {
     handleError(error);
+    return null;
   }
 }
 
@@ -161,10 +164,11 @@ export async function getUserImages({ limit = 9, page = 1, userId }: { limit?: n
     const totalImages = await Image.find({ author: userId }).countDocuments();
 
     return {
-      data: JSON.parse(JSON.stringify(images)),
+      data: JSON.parse(JSON.stringify(images)) as TImage[],
       totalPages: Math.ceil(totalImages / limit),
     };
   } catch (error) {
     handleError(error);
+    return null;
   }
 }

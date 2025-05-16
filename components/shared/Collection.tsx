@@ -7,7 +7,7 @@ import { CldImage } from "next-cloudinary";
 
 import { Pagination, PaginationContent, PaginationNext, PaginationPrevious } from "@/components/ui/pagination";
 import { transformationTypes } from "@/constants";
-import { IImage } from "@/lib/database/models/image.model";
+// import { IImage } from "@/lib/database/models/image.model";
 import { formUrlQuery } from "@/lib/utils";
 
 import { Button } from "../ui/button";
@@ -20,7 +20,7 @@ export const Collection = ({
   totalPages = 1,
   page,
 }: {
-  images: IImage[];
+  images: TImage[] | null;
   totalPages?: number;
   page: number;
   hasSearch?: boolean;
@@ -48,7 +48,7 @@ export const Collection = ({
         {hasSearch && <Search />}
       </div>
 
-      {images.length > 0 ? (
+      {images && images.length > 0 ? (
         <ul className="collection-list">
           {images.map(image => (
             <Card image={image} key={image._id as string} />
@@ -85,7 +85,7 @@ export const Collection = ({
   );
 };
 
-const Card = ({ image }: { image: IImage }) => {
+const Card = ({ image }: { image: TImage }) => {
   const recolor = { ...image.config.recolor, to: image.config?.recolor?.to?.replace("#", "") };
   return (
     <li>

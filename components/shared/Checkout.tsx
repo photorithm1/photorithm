@@ -1,6 +1,5 @@
 "use client";
 
-import { loadStripe } from "@stripe/stripe-js";
 import { useEffect } from "react";
 import { checkoutCredits } from "@/lib/actions/transaction.action";
 import { toast } from "sonner";
@@ -17,10 +16,6 @@ const Checkout = ({
   credits: number;
   buyerId: string;
 }) => {
-  useEffect(() => {
-    loadStripe(process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY!);
-  }, []);
-
   useEffect(() => {
     // Check to see if this is a redirect back from Checkout
     const query = new URLSearchParams(window.location.search);
