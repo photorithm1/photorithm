@@ -172,3 +172,15 @@ export async function getUserImages({ limit = 9, page = 1, userId }: { limit?: n
     return null;
   }
 }
+
+export async function getUserImagesCount(userId: string) {
+  try {
+    await connectToDatabase();
+    return Image.countDocuments({ author: userId });
+  } catch (error) {
+    console.log("ERROR IN GETUSERIMAGES");
+    alert();
+    handleError(error);
+    return null;
+  }
+}

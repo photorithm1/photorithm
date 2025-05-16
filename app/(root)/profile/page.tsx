@@ -4,7 +4,7 @@ import { redirect } from "next/navigation";
 
 import { Collection } from "@/components/shared/Collection";
 import Header from "@/components/shared/Header";
-import { getUserImages } from "@/actions/image.action";
+import { getUserImages, getUserImagesCount } from "@/actions/image.action";
 import { getUserById } from "@/actions/user.action";
 
 const Profile = async ({ searchParams }: SearchParamProps) => {
@@ -33,7 +33,7 @@ const Profile = async ({ searchParams }: SearchParamProps) => {
           <p className="p-14-medium md:p-16-medium">IMAGE MANIPULATION DONE</p>
           <div className="mt-4 flex items-center gap-4">
             <Image src="/assets/icons/photo.svg" alt="coins" width={50} height={50} className="size-9 md:size-12" />
-            <h2 className="h2-bold text-dark-600">{images?.data.length}</h2>
+            <h2 className="h2-bold text-dark-600">{await getUserImagesCount(user._id)}</h2>
           </div>
         </div>
       </section>

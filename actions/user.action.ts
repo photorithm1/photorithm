@@ -1,10 +1,12 @@
 "use server";
 
 import { revalidatePath } from "next/cache";
-
+import { v2 as cloudinary } from "cloudinary";
 import User from "@/database/models/user.model";
 import { connectToDatabase } from "@/database/mongoose";
 import { handleError } from "../lib/utils";
+import mongoose from "mongoose";
+import Image from "@/database/models/image.model";
 
 // CREATE
 export async function createUser(user: CreateUserParams) {
@@ -53,18 +55,47 @@ export async function updateUser(clerkId: string, user: UpdateUserParams) {
 
 // DELETE
 export async function deleteUser(clerkId: string) {
+  /*
+  It is important to delete user along with their corresponding image documents
+  For atomic operation on deletion of user and their corresponding image document, We used
+  mongodb's transaction feature
+  */
   try {
     await connectToDatabase();
 
     // Find user to delete
-    const userToDelete = await User.findOne({ clerkId });
-
-    if (!userToDelete) {
+    const session = await mongoose.startSession();
+    session.startTransaction();
+    const deletedUser = await User.findOneAndDelete({ clerkId }).session(session);
+    if (!deletedUser) {
+      session.abortTransaction();
+      session.endSession();
       throw new Error("User not found");
+    }
+    const publicIdsOfImagesToRemove = (await Image.find({ author: deletedUser._id }).session(session)).map(
+      images => images.publicId
+    );
+
+    await Image.deleteMany({ author: deletedUser._id }).session(session);
+    session.commitTransaction();
+    session.endSession();
+
+    // even if cloudinary deletion operation fails, /cloudinary/cleanup api will handel the cleanup
+    cloudinary.config({
+      cloud_name: process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME,
+      api_key: process.env.CLOUDINARY_API_KEY,
+      api_secret: process.env.CLOUDINARY_API_SECRET,
+      secure: true,
+    });
+
+    // invoke delete_resources method if images present
+    if (publicIdsOfImagesToRemove.length > 0) {
+      cloudinary.api.delete_resources(publicIdsOfImagesToRemove).catch(error => {
+        console.log("COULD NOT DELETE USER ASSETS FROM CLOUDINARY", error);
+      });
     }
 
     // Delete user
-    const deletedUser = await User.findByIdAndDelete(userToDelete._id);
     revalidatePath("/");
 
     return deletedUser ? JSON.parse(JSON.stringify(deletedUser)) : null;
