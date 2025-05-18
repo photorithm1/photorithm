@@ -6,7 +6,7 @@ import Header from "@/components/shared/Header";
 import { Button } from "@/components/ui/button";
 import { plans } from "@/constants";
 import { getUserById } from "@/actions/user.action";
-import Checkout from "@/components/shared/Checkout";
+import Checkout, { InvokeToastForPaymentStatus } from "@/components/shared/Checkout";
 
 const Credits = async () => {
   const { userId } = await auth();
@@ -17,6 +17,7 @@ const Credits = async () => {
 
   return (
     <>
+      <InvokeToastForPaymentStatus />
       <Header title="Buy Credits" subtitle="Choose a credit package that suits your needs!" />
 
       <section>

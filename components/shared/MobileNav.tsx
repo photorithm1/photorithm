@@ -17,7 +17,7 @@ export default function MobileNav() {
 
   // Check screen size on mount + resize
   useEffect(() => {
-    const checkScreen = () => setIsMobile(window.innerWidth < 768);
+    const checkScreen = () => setIsMobile(window.innerWidth < 1024);
     checkScreen();
 
     window.addEventListener("resize", checkScreen);

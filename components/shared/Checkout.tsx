@@ -16,32 +16,14 @@ const Checkout = ({
   credits: number;
   buyerId: string;
 }) => {
-  useEffect(() => {
-    // Check to see if this is a redirect back from Checkout
-    const query = new URLSearchParams(window.location.search);
-    if (query.get("success")) {
-      toast("Order placed!", {
-        description: "You will receive an email confirmation",
-        duration: 5000,
-        className: "success-toast",
-      });
-    }
-
-    if (query.get("canceled")) {
-      toast("Order canceled!", {
-        description: "Continue to shop around and checkout when you're ready",
-        duration: 5000,
-        className: "error-toast",
-      });
-    }
-  }, []);
-
   const onCheckout = async () => {
-    const transaction = {
+    const transaction: CheckoutTransactionParams = {
       plan,
       amount,
       credits,
       buyerId,
+      cancelURL: `${location.origin}/credits?success=false`,
+      successURL: `${location.origin}/credits?success=true`,
     };
 
     await checkoutCredits(transaction);
@@ -58,4 +40,29 @@ const Checkout = ({
   );
 };
 
+function InvokeToastForPaymentStatus() {
+  useEffect(() => {
+    // Check to see if this is a redirect back from Checkout
+    const query = new URLSearchParams(window.location.search);
+    if (query.get("success") === "true") {
+      toast("Order placed!", {
+        description: "You will receive an email confirmation",
+        duration: 5000,
+        className: "success-toast",
+      });
+    }
+
+    if (query.get("success") === "false") {
+      toast("Order canceled!", {
+        description: "Continue to shop around and checkout when you're ready",
+        duration: 5000,
+        className: "error-toast",
+      });
+    }
+  }, []);
+
+  return null;
+}
+
+export { InvokeToastForPaymentStatus };
 export default Checkout;

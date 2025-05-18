@@ -157,7 +157,11 @@ export default function TransformationForm({
 
   async function onTransformHandler() {
     if (image === null) return; // just to be safe
-    if (!newTransformation || deepEqual(newTransformation, transformationConfig)) {
+
+    if (
+      (!newTransformation || deepEqual(newTransformation, transformationConfig)) &&
+      form.getValues("aspectRatio") === initialValues.aspectRatio // initialValues is not a state
+    ) {
       toast("No changes made", {
         description: "Please make some changes before applying transformations",
         className: "error-toast",

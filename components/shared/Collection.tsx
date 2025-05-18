@@ -8,11 +8,12 @@ import { CldImage } from "next-cloudinary";
 import { Pagination, PaginationContent, PaginationNext, PaginationPrevious } from "@/components/ui/pagination";
 import { transformationTypes } from "@/constants";
 // import { IImage } from "@/lib/database/models/image.model";
-import { formUrlQuery } from "@/lib/utils";
+import { dataUrl, formUrlQuery } from "@/lib/utils";
 
 import { Button } from "../ui/button";
 
 import { Search } from "././Search";
+import { PlaceholderValue } from "next/dist/shared/lib/get-img-props";
 
 export const Collection = ({
   hasSearch = false,
@@ -95,6 +96,7 @@ const Card = ({ image }: { image: TImage }) => {
           alt={image.title}
           width={image.width}
           height={image.height}
+          placeholder={dataUrl as PlaceholderValue}
           {...image.config}
           recolor={recolor}
           loading="lazy"
