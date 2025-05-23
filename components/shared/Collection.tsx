@@ -45,7 +45,7 @@ export const Collection = ({
   return (
     <>
       <div className="collection-heading">
-        <h2 className="h2-bold text-dark-600">Recent Edits</h2>
+        <h2 className="h2-bold text-primary">Recent Edits</h2>
         {hasSearch && <Search />}
       </div>
 
@@ -64,7 +64,11 @@ export const Collection = ({
       {totalPages > 1 && (
         <Pagination className="mt-10">
           <PaginationContent className="flex w-full">
-            <Button disabled={Number(page) <= 1} className="collection-btn" onClick={() => onPageChange("prev")}>
+            <Button
+              disabled={Number(page) <= 1}
+              className="collection-btn disabled:cursor-not-allowed cursor-pointer"
+              onClick={() => onPageChange("prev")}
+            >
               <PaginationPrevious className="hover:bg-transparent hover:text-white" />
             </Button>
 
@@ -73,7 +77,7 @@ export const Collection = ({
             </p>
 
             <Button
-              className="button w-32 bg-purple-gradient bg-cover text-white"
+              className="button w-32  bg-cover text-white disabled:cursor-not-allowed cursor-pointer"
               onClick={() => onPageChange("next")}
               disabled={Number(page) >= totalPages}
             >
@@ -104,7 +108,7 @@ const Card = ({ image }: { image: TImage }) => {
           sizes="(max-width: 767px) 100vw, (max-width: 1279px) 50vw, 33vw"
         />
         <div className="flex-between">
-          <p className="p-20-semibold mr-3 line-clamp-1 text-dark-600">{image.title}</p>
+          <p className="p-20-semibold mr-3 line-clamp-1 text-primary">{image.title}</p>
           <Image
             src={`/assets/icons/${transformationTypes[image.transformationType as TransformationTypeKey].icon}`}
             title={image.transformationType}

@@ -27,7 +27,7 @@ export default function MobileNav() {
   if (!isMobile) return null; // Only render on mobile screens
 
   return (
-    <header className="fixed top-0 left-0 w-full bg-gradient-to-r from-purple-600 to-indigo-600 shadow-lg z-50">
+    <header className="fixed top-0 left-0 w-full bg-gradient-to-r from-primary-foreground to-primary shadow-lg z-50">
       <div className="flex items-center justify-between px-6 py-4">
         {/* Logo */}
         <Link href="/" className="flex items-center gap-2">
@@ -38,7 +38,7 @@ export default function MobileNav() {
         <nav className="flex items-center gap-4 relative">
           <SignedIn>
             <div className="relative">
-              <UserButton afterSignOutUrl="/" />
+              <UserButton />
             </div>
 
             <Sheet open={menuOpen} onOpenChange={setMenuOpen}>
@@ -68,17 +68,23 @@ export default function MobileNav() {
 
                 <ul className="flex flex-col gap-4">
                   {navLinks.map(link => {
-                    const isActive = pathname.startsWith(link.route);
+                    const isActive = link.route === pathname;
                     return (
                       <li
                         key={link.route}
                         className={`flex items-center gap-3 ${
-                          isActive ? "text-purple-600 font-semibold" : "text-gray-700"
+                          isActive ? "text-white bg-primary font-semibold rounded py-1.5" : "text-primary"
                         }`}
                       >
                         <SheetClose asChild>
                           <Link href={link.route} className="flex items-center gap-3">
-                            <Image src={link.icon} alt={link.label} width={24} height={24} />
+                            <Image
+                              src={link.icon}
+                              className={`${isActive && "brightness-200"}`}
+                              alt={link.label}
+                              width={24}
+                              height={24}
+                            />
                             {link.label}
                           </Link>
                         </SheetClose>
@@ -91,7 +97,7 @@ export default function MobileNav() {
           </SignedIn>
 
           <SignedOut>
-            <Button asChild className="bg-white text-purple-600 px-4 py-2 rounded-lg font-semibold">
+            <Button asChild className="bg-white text-primary px-4 py-2 rounded-lg font-semibold">
               <Link href="/sign-in">Sign In</Link>
             </Button>
           </SignedOut>

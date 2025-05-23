@@ -1,10 +1,8 @@
 @import "tailwindcss";
 
-@plugin "tailwindcss-animate";
+@import "tw-animate-css";
 
 @custom-variant dark (&:is(.dark *));
-
-@config '../tailwind.config.js';
 
 @theme inline {
   --color-background: var(--background);
@@ -125,13 +123,24 @@
   }
 }
 
-/* ===== UTILITIES */
-@utility wrapper {
-  @apply max-w-5xl mx-auto px-5 md:px-10 w-full text-dark-400 p-16-regular;
+@theme {
+  --background-image-purple-gradient: url("/assets/images/gradient-bg.svg");
+  --background-image-banner: url("/assets/images/banner-bg.png");
+  --color-purple-100: #f4f7fe;
+  --color-purple-200: #bcb6ff;
+  --color-purple-400: #868cff;
+  --color-purple-500: #7857ff;
+  --color-purple-600: #4318ff;
+
+  --color-dark-400: #7986ac;
+  --color-dark-500: #606c80;
+  --color-dark-600: #2b3674;
+  --color-dark-700: #384262;
 }
 
-@utility gradient-text {
-  @apply bg-purple-gradient bg-cover bg-clip-text text-transparent;
+/* ===== UTILITIES */
+@utility wrapper {
+  @apply max-w-5xl mx-auto px-5 md:px-10 w-full text-primary p-16-regular;
 }
 
 /* ===== ALIGNMENTS */
@@ -201,59 +210,6 @@
   @apply font-medium text-[10px] leading-[140%];
 }
 
-/* =====  SHADCN OVERRIDES */
-@utility button {
-  @apply py-4 px-6 flex-center gap-3 rounded-full p-16-semibold focus-visible:ring-offset-0 focus-visible:ring-transparent;
-}
-
-@utility dropdown-content {
-  @apply shadow-lg rounded-md overflow-hidden p-0;
-}
-
-@utility dropdown-item {
-  @apply p-16-semibold text-dark-700 cursor-pointer transition-all px-4 py-3 rounded-none outline-none hover:border-none focus-visible:ring-transparent hover:text-white hover:bg-purple-gradient hover:bg-cover focus-visible:ring-offset-0 focus-visible:outline-none;
-}
-
-@utility input-field {
-  @apply rounded-[16px] border-2 border-purple-200/20 shadow-sm shadow-purple-200/15 text-dark-600 disabled:opacity-100 p-16-semibold h-[50px] md:h-[54px] focus-visible:ring-offset-0 px-4 py-3 focus-visible:ring-transparent;
-}
-
-@utility search-field {
-  @apply border-0 bg-transparent text-dark-600 w-full placeholder:text-dark-400 h-[50px] p-16-medium focus-visible:ring-offset-0 p-3 focus-visible:ring-transparent;
-}
-
-@utility submit-button {
-  @apply bg-purple-gradient bg-cover rounded-full py-4 px-6 p-16-semibold h-[50px] w-full md:h-[54px];
-}
-
-@utility select-field {
-  @apply w-full border-2 border-purple-200/20 shadow-sm shadow-purple-200/15 rounded-[16px] h-[50px] md:h-[54px] text-dark-600 p-16-semibold disabled:opacity-100 placeholder:text-dark-400/50 px-4 py-3 focus:ring-offset-0 focus-visible:ring-transparent focus:ring-transparent focus-visible:ring-0 focus-visible:outline-none;
-}
-
-@utility select-trigger {
-  @apply flex items-center gap-2 py-5 capitalize focus-visible:outline-none;
-}
-
-@utility select-item {
-  @apply py-3 cursor-pointer hover:bg-purple-100;
-}
-
-.IconButton {
-  @apply focus-visible:ring-transparent focus:ring-offset-0 focus-visible:ring-offset-0 focus-visible:outline-none focus-visible:border-none;
-}
-
-.sheet-content button {
-  @apply focus:ring-0 focus-visible:ring-transparent focus:ring-offset-0 focus-visible:ring-offset-0 focus-visible:outline-none focus-visible:border-none;
-}
-
-@utility success-toast {
-  @apply bg-green-100 text-green-900;
-}
-
-@utility error-toast {
-  @apply bg-red-100 text-red-900;
-}
-
 /* Home Page */
 @utility home {
   @apply sm:flex-center hidden h-72 flex-col gap-4 rounded-[20px] border bg-banner bg-cover bg-no-repeat p-10 shadow-inner;
@@ -269,11 +225,11 @@
 }
 
 @utility credits-item {
-  @apply w-full rounded-[16px] border-2 border-purple-200/20 bg-white p-8 shadow-xl shadow-purple-200/20 lg:max-w-none;
+  @apply w-full rounded-[16px] border-2 border-purple-200/20 bg-white p-8 shadow-xl shadow-secondary lg:max-w-none;
 }
 
 @utility credits-btn {
-  @apply w-full rounded-full bg-purple-100 bg-cover text-purple-500 hover:text-purple-500;
+  @apply w-full rounded-full bg-purple-100 bg-cover text-primary hover:text-primary;
 }
 
 /* Profile Page */
@@ -312,11 +268,11 @@
 }
 
 @utility collection-btn {
-  @apply button w-32 bg-purple-gradient bg-cover text-white;
+  @apply w-32 bg-primary bg-cover text-white;
 }
 
 @utility collection-card {
-  @apply flex flex-1 cursor-pointer flex-col gap-5 rounded-[16px] border-2 border-purple-200/15 bg-white p-4 shadow-xl shadow-purple-200/10 transition-all hover:shadow-purple-200/20;
+  @apply flex flex-1 cursor-pointer flex-col gap-5 rounded-[16px] border-2 border-purple-200/15 bg-white p-4 shadow-xl shadow-secondary transition-all hover:shadow-purple-200/20;
 }
 
 /* MediaUploader Component */
@@ -329,7 +285,7 @@
 }
 
 @utility media-uploader_cta-image {
-  @apply rounded-[16px] bg-white p-5 shadow-sm shadow-purple-200/50;
+  @apply rounded-[16px] bg-white p-5 shadow-sm shadow-primary;
 }
 
 /* Navbar Component */
@@ -364,7 +320,7 @@
 }
 
 @utility sidebar-nav_element {
-  @apply flex-center p-16-semibold w-full whitespace-nowrap rounded-full bg-cover transition-all hover:bg-purple-100 hover:shadow-inner;
+  @apply flex-center p-16-semibold w-full whitespace-nowrap rounded-full bg-cover transition-all hover:bg-secondary hover:shadow-inner;
 }
 
 @utility sidebar-link {
@@ -386,7 +342,7 @@
 }
 
 @utility transformed-image {
-  @apply h-fit min-h-72 w-full rounded-[10px] border border-dashed bg-purple-100/20 object-cover p-2;
+  @apply h-fit min-h-72 w-full rounded-[10px] border border-dashed bg-secondary object-cover p-2;
 }
 
 @utility transforming-loader {
@@ -394,11 +350,11 @@
 }
 
 @utility transformed-placeholder {
-  @apply flex-center p-14-medium h-full min-h-72 flex-col gap-5 rounded-[16px] border border-dashed bg-purple-100/20 shadow-inner;
+  @apply flex-center p-14-medium h-full min-h-72 flex-col gap-5 rounded-[16px] border border-dashed bg-secondary shadow-inner;
 }
 
 .auth {
-  @apply flex-center min-h-screen w-full bg-purple-100;
+  @apply flex-center min-h-screen w-full bg-secondary;
 }
 
 .root {
@@ -409,9 +365,6 @@
   @apply mt-16 flex-1 overflow-auto py-8 lg:mt-0 lg:max-h-screen lg:py-10;
 }
 
-/* ========================================== TAILWIND STYLES */
-
-/* =====  CLERK OVERRIDES */
 .cl-userButtonBox {
   display: flex;
   flex-flow: row-reverse;

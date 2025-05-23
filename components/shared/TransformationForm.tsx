@@ -320,7 +320,7 @@ export default function TransformationForm({
             type="button"
             disabled={isTransforming || !image}
             onClick={onTransformHandler}
-            className="submit-button disabled:cursor-not-allowed capitalize"
+            className="submit-button disabled:cursor-not-allowed capitalize bg-primary"
           >
             {isTransforming ? "Transforming..." : "Apply transformation"}
           </Button>
@@ -328,7 +328,7 @@ export default function TransformationForm({
           <Button
             type="submit"
             disabled={isSubmitting}
-            className="submit-button disabled:cursor-not-allowed capitalize"
+            className="submit-button disabled:cursor-not-allowed capitalize bg-primary"
           >
             {isSubmitting ? "Submitting..." : "Save Image"}
           </Button>

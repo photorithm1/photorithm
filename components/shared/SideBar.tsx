@@ -25,7 +25,7 @@ export default function SideBar() {
                 return (
                   <li
                     key={link.route}
-                    className={`sidebar-nav_elements group ${isActive ? "bg-purple-gradient text-white" : "text-gray-700"}`}
+                    className={`sidebar-nav_elements group ${isActive ? "bg-primary text-white" : "text-primary"}`}
                   >
                     <Link className="sidebar-link" href={link.route}>
                       <Image
@@ -48,7 +48,7 @@ export default function SideBar() {
                 return (
                   <li
                     key={link.route}
-                    className={`sidebar-nav_elements group ${isActive ? "bg-purple-gradient text-white" : "text-gray-700"}`}
+                    className={`sidebar-nav_elements group ${isActive ? "bg-primary text-white" : "text-primary"}`}
                   >
                     <Link className="sidebar-link" href={link.route}>
                       <Image
@@ -64,13 +64,13 @@ export default function SideBar() {
                 );
               })}
               <li className="flex-center cursor-pointer gap-2 p-4">
-                <UserButton afterSignOutUrl="/" showName />
+                <UserButton showName />
               </li>
             </ul>
           </SignedIn>
 
           <SignedOut>
-            <Button asChild className="button bg-purple-gradient bg-cover">
+            <Button asChild className="button bg-primary bg-cover">
               <Link href={"/sign-in"}>Login</Link>
             </Button>
           </SignedOut>

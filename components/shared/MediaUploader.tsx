@@ -2,10 +2,11 @@
 
 import React from "react";
 import { CldImage, CldUploadWidget, CloudinaryUploadWidgetResults } from "next-cloudinary";
-import Image from "next/image";
+// import Image from "next/image";
 import { dataUrl, getImageSize } from "@/lib/utils";
 import { PlaceholderValue } from "next/dist/shared/lib/get-img-props";
 import { toast } from "sonner";
+import { PlusIcon } from "lucide-react";
 
 type MediaUploaderProps = {
   onValueChange: (value: string) => void;
@@ -69,7 +70,7 @@ export default function MediaUploader({ onValueChange, setImage, image, type, pu
     >
       {({ open }) => (
         <div className="flex flex-col gap-4">
-          <h3 className="h3-bold text-dark-600">Original</h3>
+          <h3 className="h3-bold text-primary">Original</h3>
 
           {publicId ? (
             <div className="cursor-pointer overflow-hidden rounded-[10px]">
@@ -86,7 +87,8 @@ export default function MediaUploader({ onValueChange, setImage, image, type, pu
           ) : (
             <div className="media-uploader_cta" onClick={() => open()}>
               <div className="media-uploader_cta-image">
-                <Image src={"/assets/icons/add.svg"} alt="Add image" width={24} height={24} />
+                {/* <Image src={"/assets/icons/add.svg"} alt="Add image" width={24} height={24} /> */}
+                <PlusIcon className="rounded-2xl" />
               </div>
               <p className="p-14-medium">Click here to upload image</p>
             </div>
