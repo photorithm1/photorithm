@@ -1,5 +1,7 @@
-<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-<rect x="0.5" y="0.5" width="23" height="23" rx="11.5" fill="#F4F7FE"/>
-<rect x="0.5" y="0.5" width="23" height="23" rx="11.5" stroke="#E4EAFF"/>
-<path fill-rule="evenodd" clip-rule="evenodd" d="M17.0965 7.39004L9.9365 14.3L8.0365 12.27C7.6865 11.94 7.1365 11.92 6.7365 12.2C6.3465 12.49 6.2365 13 6.4765 13.41L8.7265 17.07C8.9465 17.41 9.3265 17.62 9.7565 17.62C10.1665 17.62 10.5565 17.41 10.7765 17.07C11.1365 16.6 18.0065 8.41004 18.0065 8.41004C18.9065 7.49004 17.8165 6.68004 17.0965 7.38004V7.39004Z" fill="#3F5FFF"/>
+<?xml version="1.0"?>
+<svg width="24" height="24" xmlns="http://www.w3.org/2000/svg" xmlns:svg="http://www.w3.org/2000/svg">
+ <g class="layer">
+  <title>Layer 1</title>
+  <path clip-rule="evenodd" d="m16.89,4.57l-8.35,11.51l-2.22,-3.38c-0.41,-0.55 -1.05,-0.58 -1.52,-0.12c-0.46,0.48 -0.58,1.33 -0.3,2.02l2.63,6.1c0.26,0.57 0.7,0.92 1.2,0.92c0.48,0 0.93,-0.35 1.19,-0.92c0.42,-0.78 8.44,-14.43 8.44,-14.43c1.05,-1.53 -0.22,-2.88 -1.06,-1.72l0,0.02z" fill="#000000" fill-rule="evenodd" id="svg_3" transform="matrix(1 0 0 1 0 0)"/>
+ </g>
 </svg>

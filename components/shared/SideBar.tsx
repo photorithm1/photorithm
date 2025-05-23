@@ -33,7 +33,7 @@ export default function SideBar() {
                         alt="icon"
                         width={24}
                         height={24}
-                        className={`${isActive && "brightness-200"}`}
+                        className={`${isActive && "filter invert brightness-200"}`}
                       />
                       {link.label}
                     </Link>
@@ -56,7 +56,7 @@ export default function SideBar() {
                         alt="icon"
                         width={24}
                         height={24}
-                        className={`${isActive && "brightness-200"}`}
+                        className={`${isActive && "filter invert brightness-200"}`}
                       />
                       {link.label}
                     </Link>

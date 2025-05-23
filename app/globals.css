@@ -124,7 +124,7 @@
 }
 
 @theme {
-  --background-image-purple-gradient: url("/assets/images/gradient-bg.svg");
+  /* --background-image-purple-gradient: url("/assets/images/gradient-bg.svg"); */
   --background-image-banner: url("/assets/images/banner-bg.png");
   --color-purple-100: #f4f7fe;
   --color-purple-200: #bcb6ff;

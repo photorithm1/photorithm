@@ -129,9 +129,9 @@ export async function getAllImages({
         model: User,
         select: "_id firstName lastName clerkId",
       })
+      .sort({ updatedAt: -1 })
       .skip(skipAmount)
       .limit(limit);
-
     const savedImages = await Image.find().countDocuments();
 
     return {

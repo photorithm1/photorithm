@@ -80,7 +80,7 @@ export default function MobileNav() {
                           <Link href={link.route} className="flex items-center gap-3">
                             <Image
                               src={link.icon}
-                              className={`${isActive && "brightness-200"}`}
+                              className={`${isActive && "filter invert brightness-200"}`}
                               alt={link.label}
                               width={24}
                               height={24}

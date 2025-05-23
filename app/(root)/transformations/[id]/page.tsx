@@ -6,9 +6,10 @@ import Header from "@/components/shared/Header";
 import TransformedImage from "@/components/shared/TransformedImage";
 import { Button } from "@/components/ui/button";
 import { getImageById } from "@/actions/image.action";
-import { getImageSize } from "@/lib/utils";
+import { dataUrl, getImageSize } from "@/lib/utils";
 import { DeleteConfirmation } from "@/components/shared/DeleteConfirmation";
 import { notFound } from "next/navigation";
+import { PlaceholderValue } from "next/dist/shared/lib/get-img-props";
 
 const ImageDetails = async ({ params }: SearchParamProps) => {
   const { userId } = await auth();
@@ -78,6 +79,7 @@ const ImageDetails = async ({ params }: SearchParamProps) => {
               width={getImageSize(image.transformationType, image, "width")}
               height={getImageSize(image.transformationType, image, "height")}
               src={image.secureURL}
+              placeholder={dataUrl as PlaceholderValue}
               alt="image"
               className="transformation-original_image"
             />
@@ -96,7 +98,7 @@ const ImageDetails = async ({ params }: SearchParamProps) => {
 
         {userId === image.author.clerkId && (
           <div className="mt-4 space-y-4">
-            <Button asChild type="button" className="submit-button capitalize">
+            <Button asChild type="button" className="button h-[44px] w-full md:h-[54px]">
               <Link href={`/transformations/${image._id}/update`}>Update Image</Link>
             </Button>
 
