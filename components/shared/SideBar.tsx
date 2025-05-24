@@ -25,7 +25,7 @@ export default function SideBar() {
                 return (
                   <li
                     key={link.route}
-                    className={`sidebar-nav_elements group ${isActive ? "bg-primary text-white" : "text-primary"}`}
+                    className={`sidebar-nav_elements group ${isActive ? "bg-primary text-primary-foreground" : "text-primary"}`}
                   >
                     <Link className="sidebar-link" href={link.route}>
                       <Image

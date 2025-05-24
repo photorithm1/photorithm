@@ -19,9 +19,8 @@ type MediaUploaderProps = {
 export default function MediaUploader({ onValueChange, setImage, image, type, publicId }: MediaUploaderProps) {
   const onUploadSuccessHandler = (result: CloudinaryUploadWidgetResults) => {
     if (typeof result.info === "string" || typeof result.info === "undefined") {
-      toast("Upload may possibly failed, read the description below", {
-        className: "error-toast",
-        description: result.info || "Undefined error occurred",
+      toast.error("Upload may possibly failed", {
+        description: <div className="text-primary">{result.info || "Undefined error occurred"}</div>,
         duration: 5000,
       });
       return;
@@ -46,18 +45,16 @@ export default function MediaUploader({ onValueChange, setImage, image, type, pu
     // console.log(result)
 
     onValueChange(info?.public_id);
-    toast("Image uploaded successfully", {
-      description: "Image was uploaded, please apply the transformation",
+    toast.success("Image uploaded successfully", {
+      description: <div className="text-primary">Image was uploaded, please apply the transformation</div>,
       duration: 5000,
-      className: "success-toast",
     });
   };
 
   const onUploadErrorHandler = () => {
-    toast("Something went wrong while uploading", {
-      description: "please try again",
+    toast.error("Something went wrong while uploading", {
+      description: <div className="text-primary"> please try again</div>,
       duration: 5000,
-      className: "error-toast",
     });
   };
 

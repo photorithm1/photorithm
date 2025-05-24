@@ -25,7 +25,7 @@ const Profile = async ({ searchParams }: SearchParamProps) => {
           <p className="p-14-medium md:p-16-medium">CREDITS AVAILABLE</p>
           <div className="mt-4 flex items-center gap-4">
             <Image src="/assets/icons/coins.svg" alt="coins" width={50} height={50} className="size-9 md:size-12" />
-            <h2 className="h2-bold text-secondary">{user.creditBalance}</h2>
+            <h2 className="h2-bold text-primary">{user.creditBalance}</h2>
           </div>
         </div>
 

@@ -5,33 +5,26 @@ import { cn } from "@/lib/utils";
 import { ClerkProvider } from "@clerk/nextjs";
 
 const ibmPlex = IBM_Plex_Sans({
-    subsets: ["latin"],
-    weight: ["400", "500", "600", "700"],
-    variable: "--font-ibm-plex",
+  subsets: ["latin"],
+  weight: ["400", "500", "600", "700"],
+  variable: "--font-ibm-plex",
 });
 
 export const metadata: Metadata = {
-    title: "Photorithm",
-    description: "AI powered image generator",
+  title: "Photorithm",
+  description: "AI powered image generator",
 };
 
 export default function RootLayout({
-    children,
+  children,
 }: Readonly<{
-    children: React.ReactNode;
+  children: React.ReactNode;
 }>) {
-    return (
-        <ClerkProvider appearance={{ variables: { colorPrimary: "#624cf5" } }}>
-            <html lang="en">
-                <body
-                    className={cn(
-                        "font-IBMPlex antialiased ",
-                        ibmPlex.variable,
-                    )}
-                >
-                    {children}
-                </body>
-            </html>
-        </ClerkProvider>
-    );
+  return (
+    <ClerkProvider appearance={{ variables: { colorPrimary: "#624cf5" } }}>
+      <html lang="en">
+        <body className={cn("font-IBMPlex antialiased ", ibmPlex.variable)}>{children}</body>
+      </html>
+    </ClerkProvider>
+  );
 }

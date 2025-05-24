@@ -162,9 +162,9 @@ export default function TransformationForm({
       (!newTransformation || deepEqual(newTransformation, transformationConfig)) &&
       form.getValues("aspectRatio") === initialValues.aspectRatio // initialValues is not a state
     ) {
-      toast("No changes made", {
-        description: "Please make some changes before applying transformations",
-        className: "error-toast",
+      toast.error("No changes made", {
+        description: <div className="text-primary">Please make some changes before applying transformations</div>,
+        duration: 5000,
       });
       return;
     }
@@ -189,10 +189,9 @@ export default function TransformationForm({
     startTransition(async () => {
       await updateCredits(userId, creditFee);
 
-      toast("Transformed successfully", {
-        description: "1 credit deducted from your account. Please save the image",
+      toast.success("Transformed successfully", {
+        description: <div className="text-primary">1 credit deducted from your account. Please save the image</div>,
         duration: 5000,
-        className: "success-toast",
       });
     });
   }

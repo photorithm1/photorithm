@@ -38,9 +38,8 @@ export default function TransformedImage({
     const errorResponse = await fetch((event.target as HTMLImageElement).src);
     const errorMessage = errorResponse.headers.get("x-cld-error");
     if (!errorMessage) return;
-    toast("Error occurred while loading image", {
-      className: "error-toast",
-      description: errorMessage,
+    toast.error("Error occurred while loading image", {
+      description: <div className="text-primary">{errorMessage}</div>,
       duration: 5000,
     });
   }

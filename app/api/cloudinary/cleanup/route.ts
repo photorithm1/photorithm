@@ -15,7 +15,7 @@ export async function GET() {
     const images = await Image.find();
     const publicIds: string[] = [];
 
-    images.map(image => publicIds.push(image.publicId));
+    images.forEach(image => publicIds.push(image.publicId));
 
     cloudinary.config({
       cloud_name: process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME,

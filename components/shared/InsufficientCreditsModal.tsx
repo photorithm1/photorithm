@@ -45,10 +45,8 @@ export const InsufficientCreditsModal = () => {
           </AlertDialogDescription>
         </AlertDialogHeader>
         <AlertDialogFooter>
-          <AlertDialogCancel className="button w-full bg-primary text-primary" onClick={() => router.push("/profile")}>
-            No, Cancel
-          </AlertDialogCancel>
-          <AlertDialogAction className="button w-full bg-primary  bg-cover" onClick={() => router.push("/credits")}>
+          <AlertDialogCancel onClick={() => router.push("/profile")}>No, Cancel</AlertDialogCancel>
+          <AlertDialogAction className="bg-primary bg-cover" onClick={() => router.push("/credits")}>
             Yes, Proceed
           </AlertDialogAction>
         </AlertDialogFooter>
