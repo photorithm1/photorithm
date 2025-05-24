@@ -142,7 +142,7 @@ export default function TransformationForm({
   function onInputChangeHandler(
     fieldName: string,
     value: string,
-    type: "remove" | "recolor",
+    type: "remove" | "recolor" | "replaceBackground",
     onChangeField: (value: string) => void
   ) {
     setNewTransformation(prevState => ({
@@ -254,12 +254,18 @@ export default function TransformationForm({
           />
         )}
 
-        {(type === "remove" || type === "recolor") && (
+        {(type === "remove" || type === "recolor" || type === "replaceBackground") && (
           <div className="prompt-field">
             <CustomField
               control={form.control}
               name="prompt"
-              formLabel={type === "remove" ? "Object to remove" : "Object to recolor"}
+              formLabel={
+                type === "remove"
+                  ? "Object to remove"
+                  : type === "recolor"
+                    ? "Object to recolor"
+                    : "Background to replace"
+              }
               className="w-full"
               render={({ field }) => (
                 <Input

@@ -179,7 +179,6 @@ export async function getUserImagesCount(userId: string) {
     return Image.countDocuments({ author: userId });
   } catch (error) {
     console.log("ERROR IN GETUSERIMAGES");
-    alert();
     handleError(error);
     return null;
   }

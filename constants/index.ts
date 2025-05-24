@@ -30,6 +30,11 @@ export const navLinks = [
     icon: "/assets/icons/camera.svg",
   },
   {
+    label: "Background Replace",
+    route: "/transformations/add/replaceBackground",
+    icon: "/assets/icons/flip-camera.svg",
+  },
+  {
     label: "Profile",
     route: "/profile",
     icon: "/assets/icons/profile.svg",
@@ -158,6 +163,15 @@ export const transformationTypes = {
       recolor: { prompt: "", to: "", multiple: true },
     },
     icon: "filter.svg",
+  },
+  replaceBackground: {
+    type: "replaceBackground",
+    title: "Background replace",
+    subTitle: "Replace the background with prompts using AI",
+    config: {
+      replaceBackground: { prompt: "" },
+    },
+    icon: "flip-camera.svg",
   },
 };
 
