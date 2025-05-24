@@ -123,24 +123,9 @@
   }
 }
 
-@theme {
-  /* --background-image-purple-gradient: url("/assets/images/gradient-bg.svg"); */
-  --background-image-banner: url("/assets/images/banner-bg.png");
-  --color-primary-foreground: #f4f7fe;
-  --color-purple-200: #bcb6ff;
-  --color-purple-400: #868cff;
-  --color-purple-500: #7857ff;
-  --color-purple-600: #4318ff;
-
-  --color-dark-400: #7986ac;
-  --color-dark-500: #606c80;
-  --color-dark-600: #2b3674;
-  --color-dark-700: #384262;
-}
-
 /* ===== UTILITIES */
 @utility wrapper {
-  @apply max-w-5xl mx-auto px-5 md:px-10 w-full text-primary p-16-regular bg-secondary;
+  @apply max-w-5xl mx-auto px-5 md:px-10 w-full text-primary p-16-regular bg-primary-foreground;
 }
 
 /* ===== ALIGNMENTS */
@@ -211,12 +196,13 @@
 }
 
 /* Home Page */
+
 @utility home {
-  @apply sm:flex-center hidden h-72 flex-col gap-4 rounded-[20px] border bg-banner bg-cover bg-no-repeat p-10 shadow-inner;
+  @apply sm:flex-center hidden h-72 flex-col gap-4 rounded-[20px] border  bg-[url("/assets/images/banner-bg.png")]   bg-cover bg-no-repeat p-10 shadow-inner;
 }
 
 @utility home-heading {
-  @apply h1-semibold max-w-[500px] flex-wrap text-center text-secondary shadow-sm;
+  @apply h1-semibold max-w-[500px] flex-wrap text-center text-secondary dark:text-secondary-foreground;
 }
 
 /* Credits Page */
@@ -229,7 +215,7 @@
 }
 
 @utility credits-btn {
-  @apply w-full rounded-full bg-primary-foreground bg-cover text-primary hover:text-primary;
+  @apply w-full border-2 cursor-pointer rounded-full bg-primary-foreground bg-cover text-primary hover:text-primary;
 }
 
 /* Profile Page */
@@ -238,11 +224,11 @@
 }
 
 @utility profile-balance {
-  @apply w-full rounded-[16px] border-2 border-purple-200/20 bg-primary-foreground p-5 shadow-lg shadow-purple-200/10 md:px-6 md:py-8;
+  @apply w-full rounded-[16px] border-2 border-primary bg-primary-foreground p-5 hover:shadow-lg shadow-primary md:px-6 md:py-8;
 }
 
 @utility profile-image-manipulation {
-  @apply w-full rounded-[16px] border-2 border-purple-200/20 bg-primary-foreground p-5 shadow-lg shadow-purple-200/10 md:px-6 md:py-8;
+  @apply w-full rounded-[16px] border-2 border-primary bg-primary-foreground p-5 hover:shadow-lg shadow-primary md:px-6 md:py-8;
 }
 
 /* Transformation Details */
@@ -264,7 +250,7 @@
 }
 
 @utility collection-empty {
-  @apply flex-center h-60 w-full rounded-[10px] border border-dark-400/10 bg-primary-foreground/20;
+  @apply flex-center h-60 w-full rounded-[10px] border border-primary bg-primary-foreground/20;
 }
 
 @utility collection-btn {
@@ -272,7 +258,7 @@
 }
 
 @utility collection-card {
-  @apply flex flex-1 cursor-pointer flex-col gap-5 rounded-[16px] border-2 border-purple-200/15 bg-primary-foreground p-4 shadow-xl shadow-secondary transition-all hover:shadow-purple-200/20;
+  @apply flex flex-1 cursor-pointer flex-col gap-5 rounded-[16px] border-2 border-primary bg-primary-foreground p-4 shadow-xl shadow-secondary transition-all hover:shadow-primary;
 }
 
 /* MediaUploader Component */
@@ -299,12 +285,16 @@
 
 /* Search Component */
 @utility search {
-  @apply flex w-full rounded-[16px] border-2 border-purple-200/20 bg-primary-foreground px-4 shadow-sm shadow-purple-200/15 md:max-w-96;
+  @apply flex w-full rounded-[16px] border-2 border-primary bg-primary-foreground px-4 shadow-sm shadow-primary md:max-w-96;
+}
+
+@utility search-field {
+  @apply border-0 bg-inherit text-secondary-foreground focus-within:border-none focus-within:outline-none border-none w-full placeholder:text-secondary h-[50px] p-16-medium focus-visible:ring-offset-0 p-3 focus-visible:ring-transparent;
 }
 
 /* Sidebar Component */
 @utility sidebar {
-  @apply hidden h-screen w-72 bg-primary-foreground p-5 shadow-md shadow-purple-200/50 lg:flex;
+  @apply hidden min-h-screen  w-72 bg-primary-foreground p-5 shadow-md border shadow-secondary/50 lg:flex;
 }
 
 @utility sidebar-logo {
@@ -320,7 +310,7 @@
 }
 
 @utility sidebar-nav_element {
-  @apply flex-center p-16-semibold w-full whitespace-nowrap rounded-full bg-cover transition-all hover:bg-secondary hover:shadow-inner;
+  @apply flex-center p-16-semibold w-full whitespace-nowrap rounded-full bg-cover  hover:outline-primary hover:outline-2   hover:shadow-inner;
 }
 
 @utility sidebar-link {
@@ -346,7 +336,7 @@
 }
 
 @utility transforming-loader {
-  @apply flex-center absolute left-[50%] top-[50%] size-full -translate-x-1/2 -translate-y-1/2 flex-col gap-2 rounded-[10px] border bg-dark-700/90;
+  @apply flex-center absolute left-[50%] top-[50%] size-full -translate-x-1/2 -translate-y-1/2 flex-col gap-2 rounded-[10px] border bg-primary;
 }
 
 @utility transformed-placeholder {
@@ -358,11 +348,11 @@
 }
 
 .root {
-  @apply flex min-h-screen w-full flex-col bg-primary-foreground lg:flex-row;
+  @apply flex   w-full flex-col bg-primary-foreground lg:flex-row;
 }
 
 .root-container {
-  @apply mt-16 flex-1 overflow-auto py-8 lg:mt-0 lg:max-h-screen lg:py-10;
+  @apply mt-16 flex-1 overflow-auto py-8 lg:mt-0 lg:max-h-screen lg:py-10 bg-primary-foreground;
 }
 
 .cl-userButtonBox {

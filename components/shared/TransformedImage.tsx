@@ -54,7 +54,13 @@ export default function TransformedImage({
         <h3 className="h3-bold text-primary">Transformed</h3>
         {hasDownload && (
           <button className="download-btn" onClick={downloadHandler}>
-            <Image src={"/assets/icons/download.svg"} alt="download" height={24} width={24} className="pb-[6px]" />
+            <Image
+              src={"/assets/icons/download.svg"}
+              alt="download"
+              height={24}
+              width={24}
+              className="dark:filter dark:invert dark:brightness-200 pb-[6px]"
+            />
           </button>
         )}
       </div>

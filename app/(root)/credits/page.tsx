@@ -38,6 +38,7 @@ const Credits = async () => {
                     <Image
                       src={`/assets/icons/${inclusion.isIncluded ? "check.svg" : "cross.svg"}`}
                       alt="check"
+                      className={inclusion.isIncluded ? "dark:filter dark:invert dark:brightness-200" : ""}
                       width={24}
                       height={24}
                     />

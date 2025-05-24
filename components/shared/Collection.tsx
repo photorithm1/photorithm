@@ -69,7 +69,7 @@ export const Collection = ({
               className="collection-btn disabled:cursor-not-allowed cursor-pointer"
               onClick={() => onPageChange("prev")}
             >
-              <PaginationPrevious className="hover:bg-transparent hover:text-white" />
+              <PaginationPrevious className="hover:bg-transparent hover:text-secondary" />
             </Button>
 
             <p className="flex-center p-16-medium w-fit flex-1">
@@ -77,11 +77,11 @@ export const Collection = ({
             </p>
 
             <Button
-              className="button w-32  bg-cover text-white disabled:cursor-not-allowed cursor-pointer"
+              className="button w-32  bg-cover text-secondary disabled:cursor-not-allowed cursor-pointer"
               onClick={() => onPageChange("next")}
               disabled={Number(page) >= totalPages}
             >
-              <PaginationNext className="hover:bg-transparent hover:text-white" />
+              <PaginationNext className="hover:bg-transparent hover:text-secondary" />
             </Button>
           </PaginationContent>
         </Pagination>
@@ -92,6 +92,7 @@ export const Collection = ({
 
 const Card = ({ image }: { image: TImage }) => {
   const recolor = { ...image.config.recolor, to: image.config?.recolor?.to?.replace("#", "") };
+
   return (
     <li>
       <Link href={`/transformations/${image._id}`} className="collection-card">
@@ -110,9 +111,10 @@ const Card = ({ image }: { image: TImage }) => {
         <div className="flex-between">
           <p className="p-20-semibold mr-3 line-clamp-1 text-primary">{image.title}</p>
           <Image
-            src={`/assets/icons/${transformationTypes[image.transformationType as TransformationTypeKey].icon}`}
+            src={`/assets/icons/${transformationTypes[image.transformationType as TransformationTypeKey]?.icon}`}
             title={image.transformationType}
             alt={image.title}
+            className={"dark:filter dark:invert dark:brightness-200"}
             width={24}
             height={24}
           />

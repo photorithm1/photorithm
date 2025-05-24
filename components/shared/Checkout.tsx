@@ -32,7 +32,7 @@ const Checkout = ({
   return (
     <form action={onCheckout} method="POST">
       <section>
-        <Button type="submit" role="link" className="w-full rounded-full  bg-cover">
+        <Button type="submit" role="link" className="w-full rounded-full cursor-pointer  bg-cover">
           Buy Credit
         </Button>
       </section>

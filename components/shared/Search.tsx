@@ -37,7 +37,13 @@ export const Search = () => {
 
   return (
     <div className="search">
-      <Image src="/assets/icons/search.svg" alt="search" width={28} height={24} />
+      <Image
+        src="/assets/icons/search.svg"
+        className="dark:invert dark:filter dark:brightness-200"
+        alt="search"
+        width={28}
+        height={24}
+      />
 
       <Input className="search-field" placeholder="Search" onChange={e => setQuery(e.target.value)} />
     </div>

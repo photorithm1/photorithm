@@ -69,7 +69,7 @@ const ImageDetails = async ({ params }: SearchParamProps) => {
         )}
       </section>
 
-      <section className="mt-10 border-t border-dark-400/15">
+      <section className="mt-10 border-t border-primary">
         <div className="transformation-grid">
           {/* MEDIA UPLOADER */}
           <div className="flex flex-col gap-4">
