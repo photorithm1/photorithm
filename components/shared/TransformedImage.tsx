@@ -15,6 +15,7 @@ export default function TransformedImage({
   transformationConfig,
   isTransforming,
   setIsTransforming,
+  setError,
   hasDownload = true,
 }: TransformedImageProps) {
   // console.log({ image, type, title, transformationConfig, isTransforming, setIsTransforming, hasDownload  })
@@ -37,6 +38,7 @@ export default function TransformedImage({
     if (setIsTransforming) setIsTransforming(false); // if setIsTransforming function is defined or passed as prop
     const errorResponse = await fetch((event.target as HTMLImageElement).src);
     const errorMessage = errorResponse.headers.get("x-cld-error");
+    if (setError) setError(new Error(errorMessage!));
     if (!errorMessage) return;
     toast.error("Error occurred while loading image", {
       description: <div className="text-primary">{errorMessage}</div>,

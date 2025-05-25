@@ -22,7 +22,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <ClerkProvider appearance={{ variables: { colorPrimary: "#624cf5" } }}>
+    <ClerkProvider appearance={{ variables: { colorPrimary: "rgb(23, 23, 23)" } }}>
       <html lang="en" suppressHydrationWarning>
         <ThemeProvider attribute={"class"} defaultTheme="system" enableSystem disableTransitionOnChange>
           <body className={cn("font-IBMPlex antialiased bg-primary-foreground", ibmPlex.variable)}>{children}</body>

@@ -41,9 +41,10 @@ export default function TransformationForm({
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isTransforming, setIsTransforming] = useState(false);
   const [transformationConfig, setTransformationConfig] = useState(config);
+  const [selectFieldValue, setSelectFieldValue] = useState<AspectRatioKey | null>(null);
+  const [error, setError] = useState<Error | null>(null);
   const [, startTransition] = useTransition();
   const router = useRouter();
-  const [selectFieldValue, setSelectFieldValue] = useState<AspectRatioKey | null>(null);
 
   const initialValues =
     image && action === "Update"
@@ -72,6 +73,14 @@ export default function TransformationForm({
   async function onSubmit(values: z.infer<typeof formSchema>) {
     // if image is not transformed or privacy field is not mutated
     if (!image) return;
+    if (error) {
+      toast.error("Error while submitting", {
+        description: <div className="text-primary">{error.message}</div>,
+        duration: 5000,
+        closeButton: true,
+      });
+      return;
+    }
     setIsSubmitting(true);
     // Image is initially null but MediaUploader component will get image from user
     const transformationURL = getCldImageUrl({
@@ -311,6 +320,7 @@ export default function TransformationForm({
             )}
           />
           <TransformedImage
+            setError={setError}
             image={image}
             type={type}
             title={form.getValues().title}

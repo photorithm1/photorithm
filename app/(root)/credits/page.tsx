@@ -27,7 +27,7 @@ const Credits = async () => {
               <div className="flex-center flex-col gap-3">
                 <Image src={plan.icon} alt="check" width={50} height={50} />
                 <p className="p-20-semibold mt-2 text-primary">{plan.name}</p>
-                <p className="h1-semibold text-primary">${plan.price}</p>
+                <p className="h1-semibold text-primary">₹{plan.price}</p>
                 <p className="p-16-regular">{plan.credits} Credits</p>
               </div>
 
