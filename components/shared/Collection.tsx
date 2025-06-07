@@ -91,7 +91,7 @@ export const Collection = ({
 };
 
 const Card = ({ image }: { image: TImage }) => {
-  const recolor = { ...image.config.recolor, to: image.config?.recolor?.to?.replace("#", "") };
+  const recolor = { ...image.config?.recolor, to: image.config?.recolor?.to?.replace("#", "") };
 
   return (
     <li>

@@ -95,7 +95,7 @@ export default function TransformationForm({
       transformationType: type,
       width: image.width,
       height: image.height,
-      config: transformationConfig,
+      config: transformationConfig!,
       secureURL: image?.secureURL,
       transformationURL,
       aspectRatio: values.aspectRatio,

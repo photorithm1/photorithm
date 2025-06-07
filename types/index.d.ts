@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 declare type CreateUserParams = {
   clerkId: string;
   email: string;
@@ -23,7 +22,7 @@ declare type AddImageParams = {
     transformationType: string;
     width: number;
     height: number;
-    config: any;
+    config: Transformations;
     secureURL: string;
     transformationURL: string;
     aspectRatio: string | undefined;
@@ -43,7 +42,7 @@ declare type UpdateImageParams = {
     transformationType: string;
     width: number;
     height: number;
-    config: any;
+    config: Transformations;
     secureURL: string;
     transformationURL: string;
     aspectRatio: string | undefined;
@@ -152,7 +151,7 @@ declare type TImage = {
   transformationType: string;
   width: number;
   height: number;
-  config: any;
+  config: Transformations | null;
   secureURL: string;
   transformationURL: string;
   aspectRatio: string | undefined;

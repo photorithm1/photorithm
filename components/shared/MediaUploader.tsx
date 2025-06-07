@@ -35,7 +35,7 @@ export default function MediaUploader({ onValueChange, setImage, image, type, pu
       title: "",
       transformationURL: "",
       transformationType: type,
-      config: undefined,
+      config: null,
       color: undefined,
       aspectRatio: undefined,
       isPrivate: false,
