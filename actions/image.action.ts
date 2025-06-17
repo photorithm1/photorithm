@@ -90,7 +90,7 @@ export async function getImageById(imageId: string): Promise<TImage | null> {
 
 // get all images
 export async function getAllImages({
-  limit = 9,
+  limit = 6,
   page = 1,
   searchQuery = "",
 }: {

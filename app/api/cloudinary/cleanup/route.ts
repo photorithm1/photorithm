@@ -11,11 +11,11 @@ import { v2 as cloudinary, ResourceApiResponse } from "cloudinary";
 import { NextResponse } from "next/server";
 
 export async function GET() {
+  console.time("cleanup");
+  console.log("Cleanup function started...");
   try {
     const images = await Image.find();
-    const publicIds: string[] = [];
-
-    images.forEach(image => publicIds.push(image.publicId));
+    const publicIds: string[] = images.map(image => image.publicId);
 
     cloudinary.config({
       cloud_name: process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME,
@@ -28,10 +28,9 @@ export async function GET() {
     const fiveMinutesAgo = Math.floor(new Date().getTime() / 1000) - 5 * 60;
 
     // Search for resources older than 5 minutes
-    const expression = `folder=${process.env.CLOUDINARY_IMAGE_FOLDER} AND uploaded_at<${fiveMinutesAgo}`;
     const { resources } = (await cloudinary.search
-      .expression(expression)
-      .max_results(50)
+      .expression(`folder=${process.env.CLOUDINARY_IMAGE_FOLDER} AND uploaded_at<${fiveMinutesAgo}`)
+      .max_results(100)
       .execute()) as ResourceApiResponse;
 
     // Filter unwanted images which are not available in database
@@ -48,7 +47,11 @@ export async function GET() {
 
     return NextResponse.json({ message: "Unwanted resources deleted from cloudinary" }, { status: 200 });
   } catch (error) {
+    console.timeEnd("cleanup");
     console.log("ERROR IN api/cloudinary/cleanup", error);
     return NextResponse.json({ message: (error as Error).message }, { status: 500 });
+  } finally {
+    console.log("Cleanup function ended...");
+    console.timeEnd("cleanup");
   }
 }
