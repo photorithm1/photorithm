@@ -5,6 +5,22 @@ import Image from "next/image";
 import Link from "next/link";
 import React from "react";
 
+/**
+ * Home Page Component
+ * 
+ * The main landing page of the application that showcases:
+ * - A hero section with transformation type shortcuts
+ * - A collection of transformed images
+ * 
+ * Features:
+ * - Dynamic image collection with pagination
+ * - Search functionality
+ * - Quick access to transformation types
+ * - Responsive grid layout
+ * 
+ * @param {SearchParamProps} props - Component props including search parameters
+
+ */
 export default async function Home({ searchParams }: SearchParamProps) {
   const searchParamsResult = await searchParams;
   const page = Number(searchParamsResult?.page) || 1;

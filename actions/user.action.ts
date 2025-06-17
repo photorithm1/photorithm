@@ -1,5 +1,4 @@
 "use server";
-
 import { revalidatePath } from "next/cache";
 import { v2 as cloudinary } from "cloudinary";
 import User from "@/database/models/user.model";
@@ -8,7 +7,14 @@ import { handleError } from "../lib/utils";
 import mongoose from "mongoose";
 import Image from "@/database/models/image.model";
 
-// CREATE
+/**
+ * Creates a new user document in the database.
+ *
+ * This is typically used in Clerk's webhook handler when a new user signs up.
+ *
+ * @param user - The user data to be stored.
+ * @returns The created user object or undefined on error.
+ */
 export async function createUser(user: CreateUserParams) {
   try {
     await connectToDatabase();
@@ -21,7 +27,12 @@ export async function createUser(user: CreateUserParams) {
   }
 }
 
-// READ
+/**
+ * Retrieves a user from the database using their Clerk ID.
+ *
+ * @param userId - The Clerk ID of the user.
+ * @returns The user object if found, or undefined on error.
+ */
 export async function getUserById(userId: string) {
   try {
     await connectToDatabase();
@@ -36,7 +47,15 @@ export async function getUserById(userId: string) {
   }
 }
 
-// UPDATE
+/**
+ * Updates a user document in the database using their Clerk ID.
+ *
+ * Typically triggered by a Clerk webhook update.
+ *
+ * @param clerkId - The Clerk ID of the user.
+ * @param user - The fields to update in the user document.
+ * @returns The updated user object or undefined on error.
+ */
 export async function updateUser(clerkId: string, user: UpdateUserParams) {
   try {
     await connectToDatabase();
@@ -53,13 +72,16 @@ export async function updateUser(clerkId: string, user: UpdateUserParams) {
   }
 }
 
-// DELETE
+/**
+ * Deletes a user and all their associated image documents.
+ *
+ * Uses a MongoDB transaction to ensure atomic deletion.
+ * Attempts to delete Cloudinary assets, but defers any failures to the `api/cloudinary/cleanup` route.
+ *
+ * @param clerkId - The Clerk ID of the user to delete.
+ * @returns The deleted user object or undefined on error.
+ */
 export async function deleteUser(clerkId: string) {
-  /*
-  It is important to delete user along with their corresponding image documents
-  For atomic operation on deletion of user and their corresponding image document, We used
-  mongodb's transaction feature
-  */
   try {
     await connectToDatabase();
 
@@ -80,7 +102,7 @@ export async function deleteUser(clerkId: string) {
     session.commitTransaction();
     session.endSession();
 
-    // even if cloudinary deletion operation fails, /cloudinary/cleanup api will handel the cleanup
+    // even if cloudinary deletion operation fails, api/cloudinary/cleanup route will handel the cleanup
     cloudinary.config({
       cloud_name: process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME,
       api_key: process.env.CLOUDINARY_API_KEY,
@@ -104,7 +126,20 @@ export async function deleteUser(clerkId: string) {
   }
 }
 
-// USE CREDITS
+/**
+ * Updates a user's credit balance by incrementing it.
+ *
+ * The `creditFee` should be a **negative**
+ * number to reduce credits and a **positive** number to add credits.
+ *
+ * Examples:
+ * - `updateCredits("user123", -5)` → deducts 5 credits
+ * - `updateCredits("user123", 10)`  → adds 10 credits
+ *
+ * @param userId - The MongoDB `_id` of the user
+ * @param creditFee - The amount to increment (positive or negative)
+ * @returns The updated user object or `undefined` if failed
+ */
 export async function updateCredits(userId: string, creditFee: number) {
   try {
     await connectToDatabase();

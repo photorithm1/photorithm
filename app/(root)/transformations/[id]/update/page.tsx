@@ -1,3 +1,12 @@
+/**
+ * Update Transformation Page Component
+ *
+ * Renders the transformation form for updating an existing image transformation.
+ * Handles basic authorization and data fetching before passing control to the form.
+ *
+ * @param {SearchParamProps} params - Contains the transformation ID in the URL
+ * @returns {Promise<JSX.Element>} The rendered update transformation page
+ */
 import { auth } from "@clerk/nextjs/server";
 import { notFound, redirect } from "next/navigation";
 

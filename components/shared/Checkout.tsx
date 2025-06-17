@@ -5,17 +5,38 @@ import { checkoutCredits } from "@/actions/transaction.action";
 import { toast } from "sonner";
 import { Button } from "../ui/button";
 
-const Checkout = ({
-  plan,
-  amount,
-  credits,
-  buyerId,
-}: {
+/**
+ * Props for the Checkout component
+ * Used to handle credit purchase transactions
+ */
+type CheckoutProps = {
+  /** The selected plan name */
   plan: string;
+  /** The amount to be charged */
   amount: number;
+  /** Number of credits to be purchased */
   credits: number;
+  /** ID of the user making the purchase */
   buyerId: string;
-}) => {
+};
+
+/**
+ * Checkout Component
+ *
+ * A component that handles credit purchase transactions.
+ * Integrates with a payment system to process credit purchases.
+ *
+ * Key Features:
+ * - Credit purchase form
+ * - Transaction handling
+ * - Success/failure URL handling
+ * - Payment status notifications
+ *
+ * Usage Context:
+ * This component is used in the credits page to allow users
+ * to purchase additional credits for image transformations.
+ */
+const Checkout = ({ plan, amount, credits, buyerId }: CheckoutProps) => {
   const onCheckout = async () => {
     const transaction: CheckoutTransactionParams = {
       plan,
@@ -40,6 +61,21 @@ const Checkout = ({
   );
 };
 
+/**
+ * InvokeToastForPaymentStatus Component
+ *
+ * A utility component that displays toast notifications
+ * based on the payment transaction status.
+ *
+ * Key Features:
+ * - Payment success notification
+ * - Payment cancellation notification
+ * - URL parameter handling
+ *
+ * Usage Context:
+ * This component is used alongside the Checkout component
+ * to provide feedback about payment transaction status.
+ */
 function InvokeToastForPaymentStatus() {
   useEffect(() => {
     // Check to see if this is a redirect back from Checkout

@@ -14,6 +14,30 @@ import {
   AlertDialogTitle,
 } from "@/components/ui/alert-dialog";
 
+/**
+ * InsufficientCreditsModal Component
+ *
+ * A modal dialog that appears when a user has insufficient credits
+ * to perform an image transformation.
+ *
+ * Key Features:
+ * - Alert dialog with custom styling
+ * - Visual feedback with stacked coins image
+ * - Navigation options to profile or credits page
+ * - Responsive design
+ *
+ * Usage Context:
+ * This component is displayed when a user attempts to perform
+ * an image transformation without having enough credits.
+ * It provides clear options to either cancel the operation
+ * or proceed to purchase more credits.
+ *
+ * Implementation Details:
+ * - Used in TransformationForm component
+ * - Conditionally rendered when creditBalance < creditFee
+ * - Provides navigation to profile or credits page
+ * - Uses AlertDialog from shadcn/ui for consistent styling
+ */
 export const InsufficientCreditsModal = () => {
   const router = useRouter();
 

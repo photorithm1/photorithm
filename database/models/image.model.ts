@@ -1,3 +1,26 @@
+/**
+ * Mongoose model for managing image transformations and metadata in the application.
+ *
+ * This model represents a transformed image in the database, storing the original image's
+ * metadata (publicId, secureURL) and transformation configurations. The transformed image
+ * is not stored but generated on-the-fly using Cloudinary's transformation capabilities
+ * when requested through components like CldImage. Each image is linked to a user (author).
+ *
+ * This model handles the storage and retrieval of transformed images, integrating with Cloudinary
+ * for image processing and storage. It supports various transformation types including:
+ * - Background removal
+ * - Object removal
+ * - Color recoloring
+ * - Background replacement
+ * - Image restoration
+ * - Aspect ratio adjustments
+ *
+ * Used in:
+ * - Image transformation workflow (TransformationForm)
+ * - User's image collection
+ * - Transformation details and preview
+ */
+
 import { Document, Model, Schema, model, models, Types } from "mongoose";
 
 export interface IImage {

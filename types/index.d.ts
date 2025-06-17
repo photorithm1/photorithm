@@ -1,3 +1,14 @@
+/**
+ * Type definitions for the application.
+ *
+ * This file contains TypeScript type definitions used throughout the application,
+ * including user, image, transaction, and form-related types.
+ */
+
+/**
+ * Parameters for creating a new user
+ * Used in Clerk webhook handler when a new user signs up
+ */
 declare type CreateUserParams = {
   clerkId: string;
   email: string;
@@ -7,6 +18,10 @@ declare type CreateUserParams = {
   photo: string;
 };
 
+/**
+ * Parameters for updating an existing user
+ * Used in Clerk webhook handler when user profile is updated
+ */
 declare type UpdateUserParams = {
   firstName: string;
   lastName: string;
@@ -15,6 +30,10 @@ declare type UpdateUserParams = {
 };
 
 // ====== IMAGE PARAMS
+/**
+ * Parameters for adding a new image
+ * Used in image transformation workflow
+ */
 declare type AddImageParams = {
   image: {
     title: string;
@@ -34,6 +53,10 @@ declare type AddImageParams = {
   path: string;
 };
 
+/**
+ * Parameters for updating an existing image
+ * Used in image transformation workflow
+ */
 declare type UpdateImageParams = {
   image: {
     _id: string;
@@ -54,6 +77,10 @@ declare type UpdateImageParams = {
   path: string;
 };
 
+/**
+ * Configuration options for image transformations
+ * Used in TransformationForm and TransformedImage components
+ */
 declare type Transformations = {
   restore?: boolean;
   fillBackground?: boolean;
@@ -74,6 +101,10 @@ declare type Transformations = {
 };
 
 // ====== TRANSACTION PARAMS
+/**
+ * Parameters for initiating a credit purchase transaction
+ * Used in Checkout component and Stripe integration
+ */
 declare type CheckoutTransactionParams = {
   plan: string;
   credits: number;
@@ -83,6 +114,10 @@ declare type CheckoutTransactionParams = {
   cancelURL: string;
 };
 
+/**
+ * Parameters for creating a transaction record
+ * Used in Stripe webhook handler after successful payment
+ */
 declare type CreateTransactionParams = {
   stripeId: string;
   amount: number;
@@ -92,6 +127,10 @@ declare type CreateTransactionParams = {
   createdAt: Date;
 };
 
+/**
+ * Valid transformation type keys
+ * Used for type safety in transformation-related components
+ */
 declare type TransformationTypeKey =
   | "restore"
   | "fill"
@@ -101,28 +140,48 @@ declare type TransformationTypeKey =
   | "replaceBackground";
 
 // ====== URL QUERY PARAMS
+/**
+ * Parameters for updating URL query parameters
+ * Used in pagination and filtering
+ */
 declare type FormUrlQueryParams = {
   searchParams: string;
   key: string;
   value: string | number | null;
 };
 
+/**
+ * Parameters for URL query manipulation
+ * Used in navigation and state management
+ */
 declare type UrlQueryParams = {
   params: string;
   key: string;
   value: string | null;
 };
 
+/**
+ * Parameters for removing URL query parameters
+ * Used in cleaning up URL state
+ */
 declare type RemoveUrlQueryParams = {
   searchParams: string;
   keysToRemove: string[];
 };
 
+/**
+ * Props for pages with search parameters
+ * Used in dynamic route pages
+ */
 declare type SearchParamProps = {
   params: Promise<{ id: string; type: TransformationTypeKey }>;
   searchParams: Promise<{ [key: string]: string | string[] | undefined }>;
 };
 
+/**
+ * Props for the TransformationForm component
+ * Used in image transformation workflow
+ */
 declare type TransformationFormProps = {
   action: "Add" | "Update";
   userId: string;
@@ -132,6 +191,10 @@ declare type TransformationFormProps = {
   config?: Transformations | null;
 };
 
+/**
+ * Props for the TransformedImage component
+ * Used in image transformation preview
+ */
 declare type TransformedImageProps = {
   image: TImage | null;
   type: string;
@@ -143,6 +206,10 @@ declare type TransformedImageProps = {
   setError?: React.Dispatch<React.SetStateAction<Error | null>>;
 };
 
+/**
+ * Image data structure
+ * Used throughout the application for image management
+ */
 declare type TImage = {
   _id?: string;
   title: string;
@@ -160,6 +227,10 @@ declare type TImage = {
   isPrivate: boolean;
 };
 
+/**
+ * User data structure
+ * Used throughout the application for user management
+ */
 declare type TUser = {
   _id: string;
   clerkId: string;

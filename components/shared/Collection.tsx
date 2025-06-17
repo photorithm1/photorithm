@@ -15,17 +15,39 @@ import { Button } from "../ui/button";
 import { Search } from "././Search";
 import { PlaceholderValue } from "next/dist/shared/lib/get-img-props";
 
-export const Collection = ({
-  hasSearch = false,
-  images,
-  totalPages = 1,
-  page,
-}: {
+/**
+ * Props for the Collection component
+ * Used to display a paginated list of transformed images
+ */
+type CollectionProps = {
+  /** Array of transformed images to display */
   images: TImage[] | null;
+  /** Total number of pages for pagination */
   totalPages?: number;
+  /** Current page number */
   page: number;
+  /** Whether to show the search component */
   hasSearch?: boolean;
-}) => {
+};
+
+/**
+ * Collection Component
+ *
+ * A component that displays a grid of transformed images with pagination.
+ * Each image is displayed as a card with its title and transformation type icon.
+ *
+ * Key Features:
+ * - Paginated image grid display
+ * - Optional search functionality
+ * - Image cards with transformation type indicators
+ * - Responsive layout
+ * - Empty state handling
+ *
+ * Usage Context:
+ * This component is used to display collections of transformed images,
+ * typically in the user's gallery or search results.
+ */
+export const Collection = ({ hasSearch = false, images, totalPages = 1, page }: CollectionProps) => {
   const router = useRouter();
   const searchParams = useSearchParams();
 
@@ -90,6 +112,15 @@ export const Collection = ({
   );
 };
 
+/**
+ * Card Component
+ *
+ * A subcomponent that renders an individual transformed image card.
+ * Displays the image with its transformation type icon and title.
+ *
+ * @param {Object} props - Component props
+ * @param {TImage} props.image - The image data to display
+ */
 const Card = ({ image }: { image: TImage }) => {
   const recolor = { ...image.config?.recolor, to: image.config?.recolor?.to?.replace("#", "") };
 

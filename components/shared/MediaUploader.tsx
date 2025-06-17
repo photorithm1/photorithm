@@ -8,15 +8,52 @@ import { PlaceholderValue } from "next/dist/shared/lib/get-img-props";
 import { toast } from "sonner";
 import { PlusIcon } from "lucide-react";
 
+/**
+ * Props for the MediaUploader component
+ * Used within TransformationForm to handle image uploads for transformations
+ */
 type MediaUploaderProps = {
+  /** Function to handle value changes */
   onValueChange: (value: string) => void;
-  setImage: React.Dispatch<React.SetStateAction<TImage | null>>; // Fix this soon
+  /** Function to update image state */
+  setImage: React.Dispatch<React.SetStateAction<TImage | null>>;
+  /** Optional public ID of the image */
   publicId?: string;
+  /** Current image data */
   image: TImage | null;
+  /** Type of transformation */
   type: string;
 };
 
+/**
+ * MediaUploader Component
+ * 
+ * A specialized component for handling image uploads in the transformation workflow.
+ * Integrates with Cloudinary's upload widget to provide a seamless image upload experience.
+ * 
+ * Key Features:
+ * - Cloudinary Upload Widget Integration
+ * - Image Preview with Loading States
+ * - Success/Error Notifications
+ * - Automatic Image Data Management
+ * 
+ * Usage Context:
+ * This component is specifically designed to work within the TransformationForm,
+ * where it handles the initial image upload before any transformations are applied.
+ * It's part of a larger workflow where:
+ * 1. User uploads an image through this component
+ * 2. Image data is stored in parent state
+ * 3. User applies transformations
+ * 4. Transformed image is saved
+ * 
+ * @param {MediaUploaderProps} props - Component props
+
+ */
 export default function MediaUploader({ onValueChange, setImage, image, type, publicId }: MediaUploaderProps) {
+  /**
+   * Handles successful image upload from Cloudinary
+   * Updates both the form state and parent component state
+   */
   const onUploadSuccessHandler = (result: CloudinaryUploadWidgetResults) => {
     if (typeof result.info === "string" || typeof result.info === "undefined") {
       toast.error("Upload may possibly failed", {
@@ -51,6 +88,10 @@ export default function MediaUploader({ onValueChange, setImage, image, type, pu
     });
   };
 
+  /**
+   * Handles upload errors from Cloudinary
+   * Shows error notification to user
+   */
   const onUploadErrorHandler = () => {
     toast.error("Something went wrong while uploading", {
       description: <div className="text-primary"> please try again</div>,

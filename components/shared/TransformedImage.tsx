@@ -7,7 +7,53 @@ import React from "react";
 import { PlaceholderValue } from "next/dist/shared/lib/get-img-props";
 import { toast } from "sonner";
 
-// This component will only use publicId, height and width props of "image" and only work when transformationConfig props is not null
+/**
+ * Props for the TransformedImage component
+ * Used to display and manage transformed images with Cloudinary integration
+ */
+type TransformedImageProps = {
+  /** The image data to be transformed */
+  image: TImage | null;
+  /** Type of transformation being applied */
+  type: string;
+  /** Title of the image */
+  title: string;
+  /** Configuration for the transformation */
+  transformationConfig: Transformations | null;
+  /** Whether the image is currently being transformed */
+  isTransforming: boolean;
+  /** Function to update transformation state */
+  setIsTransforming?: React.Dispatch<React.SetStateAction<boolean>>;
+  /** Function to handle errors */
+  setError?: React.Dispatch<React.SetStateAction<Error | null>>;
+  /** Whether to show the download button */
+  hasDownload?: boolean;
+};
+
+/**
+ * TransformedImage Component
+ * 
+ * A specialized component for displaying transformed images with Cloudinary integration.
+ * Handles image transformation display, loading states, error handling, and download functionality.
+ * 
+ * Key Features:
+ * - Real-time transformation preview using Cloudinary
+ * - Loading state indicator during transformation
+ * - Error handling for failed transformations
+ * - Image download functionality
+ * - Responsive image sizing
+ * 
+ * Usage Context:
+ * This component is used within the TransformationForm to display the transformed image
+ * after applying various transformations like:
+ * - Background removal
+ * - Color adjustments
+ * - Aspect ratio changes
+ * - Object removal
+ * 
+ * @param {TransformedImageProps} props - Component props
+
+ */
 export default function TransformedImage({
   image,
   type,
@@ -18,8 +64,12 @@ export default function TransformedImage({
   setError,
   hasDownload = true,
 }: TransformedImageProps) {
-  // console.log({ image, type, title, transformationConfig, isTransforming, setIsTransforming, hasDownload  })
-
+  /**
+   * Handles image download
+   * Generates the transformed image URL and triggers download
+   *
+   * @param {React.MouseEvent} event - Click event
+   */
   function downloadHandler(event: React.MouseEvent) {
     event.preventDefault();
     if (!image) return;
@@ -34,8 +84,14 @@ export default function TransformedImage({
     );
   }
 
+  /**
+   * Handles image loading errors
+   * Updates error state and shows error notification
+   *
+   * @param {React.SyntheticEvent<HTMLImageElement, Event>} event - Error event
+   */
   async function handelImageLoadingError(event: React.SyntheticEvent<HTMLImageElement, Event>) {
-    if (setIsTransforming) setIsTransforming(false); // if setIsTransforming function is defined or passed as prop
+    if (setIsTransforming) setIsTransforming(false);
     const errorResponse = await fetch((event.target as HTMLImageElement).src);
     const errorMessage = errorResponse.headers.get("x-cld-error");
     if (setError) setError(new Error(errorMessage!));
@@ -50,6 +106,7 @@ export default function TransformedImage({
     ...transformationConfig?.recolor,
     to: transformationConfig?.recolor?.to.replace("#", ""),
   };
+
   return (
     <div className="flex flex-col gap-4">
       <div className="flex-between">
@@ -78,7 +135,7 @@ export default function TransformedImage({
             placeholder={dataUrl as PlaceholderValue}
             className="transformed-image"
             onLoad={() => {
-              if (setIsTransforming) setIsTransforming(false); // if setIsTransforming function is defined or passed as prop
+              if (setIsTransforming) setIsTransforming(false);
             }}
             onError={e => handelImageLoadingError(e)}
             {...transformationConfig}

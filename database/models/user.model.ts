@@ -1,3 +1,18 @@
+/**
+ * Mongoose model for managing user accounts in the application.
+ *
+ * This model represents a user account, storing essential user information and
+ * credit balance. It integrates with Clerk for authentication and maintains
+ * synchronization through webhook events. Each user starts with 10 credits by
+ * default and can purchase more through the credit system.
+ *
+ * Used in:
+ * - User authentication and profile management (Clerk webhooks)
+ * - Credit balance tracking and updates
+ * - Image transformation workflow (credit deduction)
+ * - User profile and collection pages
+ */
+
 import { Document, Model, Schema, Types, model, models } from "mongoose";
 
 export interface IUser {

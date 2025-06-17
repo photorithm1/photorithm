@@ -7,6 +7,22 @@ import Header from "@/components/shared/Header";
 import { getUserImages, getUserImagesCount } from "@/actions/image.action";
 import { getUserById } from "@/actions/user.action";
 
+/**
+ * Profile Page Component
+ *
+ * Displays user profile information and their transformed images:
+ * - Credit balance
+ * - Number of transformations performed
+ * - Paginated collection of user's images
+ *
+ * Features:
+ * - Authentication check
+ * - Credit balance display
+ * - Transformation statistics
+ * - User's image collection
+ *
+ * @param {SearchParamProps} searchParams - Contains pagination parameters
+ */
 const Profile = async ({ searchParams }: SearchParamProps) => {
   const page = Number((await searchParams)?.page) || 1;
   const { userId } = await auth();

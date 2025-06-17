@@ -1,3 +1,22 @@
+/**
+ * Credits Page Component
+ *
+ * This page displays available credit packages for users to purchase.
+ * It shows different plans with their prices, credit amounts, and included features.
+ *
+ * Features:
+ * - Displays credit packages from the plans constant
+ * - Shows plan details including price, credits, and inclusions
+ * - Integrates with Clerk for authentication
+ * - Provides checkout functionality for paid plans
+ * - Handles free plan display
+ *
+ * Authentication:
+ * - Requires user to be signed in
+ * - Redirects to sign-in page if not authenticated
+ *
+ * @returns {Promise<JSX.Element>} The rendered credits page
+ */
 import { SignedIn } from "@clerk/nextjs";
 import { auth } from "@clerk/nextjs/server";
 import Image from "next/image";

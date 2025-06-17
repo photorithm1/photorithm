@@ -19,6 +19,10 @@ import { useRouter } from "next/navigation";
 import { InsufficientCreditsModal } from "./InsufficientCreditsModal";
 import { toast } from "sonner";
 
+/**
+ * Form schema for image transformation
+ * Validates required and optional fields for the transformation form
+ */
 export const formSchema = z.object({
   title: z.string().trim().min(1, "Title is required"),
   aspectRatio: z.string().optional(),
@@ -28,6 +32,41 @@ export const formSchema = z.object({
   privacy: z.string(),
 });
 
+/**
+ * TransformationForm Component
+ *
+ * Core component for handling image transformations in the application.
+ * Manages the entire transformation workflow from image upload to saving.
+ *
+ * Features:
+ * - Image upload and preview
+ * - Multiple transformation types (restore, removeBackground, fill, etc.)
+ * - Real-time transformation preview
+ * - Credit management and validation
+ * - Form validation with Zod
+ * - Privacy settings
+ *
+ * Transformation Types:
+ * - restore: Restore image quality
+ * - removeBackground: Remove image background
+ * - fill: Adjust image aspect ratio
+ * - remove: Remove objects from image
+ * - recolor: Change object colors
+ * - replaceBackground: Replace image background
+ *
+ * Credit System:
+ * - Each transformation costs credits
+ * - Credit balance is checked before transformation
+ * - Credits are deducted after successful transformation
+ *
+ * @param {TransformationFormProps} props
+ * @param {string} props.action - "Add" or "Update"
+ * @param {TImage | null} props.data - Existing image data for updates
+ * @param {string} props.userId - User's ID
+ * @param {TransformationTypeKey} props.type - Type of transformation
+ * @param {number} props.creditBalance - User's current credit balance
+ * @param {Transformations | null} props.config - Initial transformation config
+ */
 export default function TransformationForm({
   action,
   data = null,
@@ -70,8 +109,13 @@ export default function TransformationForm({
     defaultValues: initialValues,
   });
 
+  /**
+   * Handles form submission for both new and updated transformations
+   * Creates or updates the image in the database and redirects to the result
+   *
+   * @param {z.infer<typeof formSchema>} values - Form values
+   */
   async function onSubmit(values: z.infer<typeof formSchema>) {
-    // if image is not transformed or privacy field is not mutated
     if (!image) return;
     if (error) {
       toast.error("Error while submitting", {
@@ -82,11 +126,10 @@ export default function TransformationForm({
       return;
     }
     setIsSubmitting(true);
-    // Image is initially null but MediaUploader component will get image from user
     const transformationURL = getCldImageUrl({
       width: image.width,
       height: image.height,
-      src: image.publicId, // image.publicId wont be undefined
+      src: image.publicId,
       ...transformationConfig,
     });
     const imageData = {
@@ -112,8 +155,6 @@ export default function TransformationForm({
           path: "/",
         });
         if (newImage) {
-          // form.reset();
-          // setImage(data); // This two are not required since This component will unmount after the below navigation
           router.push(`/transformations/${newImage._id}`);
         }
       } catch (error) {
@@ -132,8 +173,6 @@ export default function TransformationForm({
           path: `/transformations/${image._id}`,
         });
         if (updatedImage) {
-          // form.reset();
-          // setImage(data); // These twp are not required since This component will unmount after the below navigation
           router.push(`/transformations/${updatedImage._id}`);
         }
       } catch (error) {
@@ -142,12 +181,28 @@ export default function TransformationForm({
     }
   }
 
+  /**
+   * Handles aspect ratio selection for fill transformations
+   * Updates the transformation config with new aspect ratio
+   *
+   * @param {string} value - Selected aspect ratio
+   * @param {function} onFiledChange - Form field change handler
+   */
   function onSelectFieldHandler(value: string, onFiledChange: (value: string) => undefined) {
     setSelectFieldValue(value as AspectRatioKey);
     setNewTransformation(transformationType.config);
     return onFiledChange(value);
   }
 
+  /**
+   * Handles input changes for transformation-specific fields
+   * Updates the transformation config with new values
+   *
+   * @param {string} fieldName - Name of the field being changed
+   * @param {string} value - New field value
+   * @param {"remove" | "recolor" | "replaceBackground"} type - Type of transformation
+   * @param {function} onChangeField - Form field change handler
+   */
   function onInputChangeHandler(
     fieldName: string,
     value: string,
@@ -164,12 +219,16 @@ export default function TransformationForm({
     onChangeField(value);
   }
 
+  /**
+   * Applies the transformation to the image
+   * Handles credit deduction and shows appropriate notifications
+   */
   async function onTransformHandler() {
-    if (image === null) return; // just to be safe
+    if (image === null) return;
 
     if (
       (!newTransformation || deepEqual(newTransformation, transformationConfig)) &&
-      form.getValues("aspectRatio") === initialValues.aspectRatio // initialValues is not a state
+      form.getValues("aspectRatio") === initialValues.aspectRatio
     ) {
       toast.error("No changes made", {
         description: <div className="text-primary">Please make some changes before applying transformations</div>,

@@ -1,3 +1,22 @@
+/**
+ * Application Constants
+ *
+ * This file contains all the constant values used throughout the application.
+ * It includes navigation links, subscription plans, transformation types,
+ * aspect ratio options, and default values for forms.
+ *
+ * Key Exports:
+ * - navLinks: Navigation menu items with routes and icons
+ * - plans: Subscription plans with pricing and features
+ * - transformationTypes: Available image transformation options
+ * - aspectRatioOptions: Supported image aspect ratios
+ * - defaultValues: Default form field values
+ */
+
+/**
+ * Navigation links for the main menu
+ * Each link includes a label, route, and icon path used in MobileNav and Sidebar components
+ */
 export const navLinks = [
   {
     label: "Home",
@@ -46,6 +65,16 @@ export const navLinks = [
   },
 ];
 
+/**
+ * Subscription plans available for purchase
+ * Each plan includes:
+ * - name: Plan name (Free, Pro, Premium)
+ * - price: Cost in INR
+ * - credits: Number of transformation credits
+ * - inclusions: List of features with their availability
+ *   - label: Feature description
+ *   - isIncluded: Whether the feature is available in this plan
+ */
 export const plans = [
   {
     _id: 1,
@@ -124,6 +153,10 @@ export const plans = [
   },
 ];
 
+/**
+ * Available image transformation types
+ * Each type includes configuration and UI metadata
+ */
 export const transformationTypes = {
   restore: {
     type: "restore",
@@ -175,6 +208,10 @@ export const transformationTypes = {
   },
 };
 
+/**
+ * Supported image aspect ratios
+ * Each ratio includes dimensions and display label
+ */
 export const aspectRatioOptions = {
   "1:1": {
     aspectRatio: "1:1",
@@ -196,6 +233,10 @@ export const aspectRatioOptions = {
   },
 };
 
+/**
+ * Default values for form fields
+ * Used to initialize form state
+ */
 export const defaultValues = {
   title: "",
   aspectRatio: "",

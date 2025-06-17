@@ -7,6 +7,23 @@ import { useEffect, useState } from "react";
 import { Input } from "@/components/ui/input";
 import { formUrlQuery, removeKeysFromQuery } from "@/lib/utils";
 
+/**
+ * Search Component
+ *
+ * A search input component with debounced URL query updates.
+ * Updates the URL search parameters as the user types.
+ *
+ * Key Features:
+ * - Debounced search (300ms delay)
+ * - URL query parameter management
+ * - Dark mode support for search icon
+ * - Real-time search updates
+ *
+ * Implementation Details:
+ * - Uses URL search params for state management
+ * - Cleans up query params when search is empty
+ * - Prevents unnecessary page scrolls during search
+ */
 export const Search = () => {
   const router = useRouter();
   const searchParams = useSearchParams();

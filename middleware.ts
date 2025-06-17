@@ -1,3 +1,26 @@
+/**
+ * Next.js middleware for handling authentication and route protection.
+ *
+ * This middleware integrates with Clerk for authentication and defines which routes
+ * are public vs protected. Public routes are accessible without authentication,
+ * while protected routes require a valid Clerk session.
+ *
+ * Public Routes:
+ * - Authentication pages (/sign-in, /sign-up)
+ * - Webhook endpoints (/api/webhooks/*)
+ * - Cloudinary cleanup endpoint
+ * - Homepage (/)
+ * - Transformation pages (/transformations/*)
+ *
+ * Protected Routes:
+ * - All other routes require authentication
+ * - Profile and user-specific pages
+ * - Credit purchase pages
+ *
+ * The middleware uses Clerk's authentication system and protects all routes
+ * except those explicitly marked as public.
+ */
+
 import { clerkMiddleware, ClerkMiddlewareAuth, createRouteMatcher } from "@clerk/nextjs/server";
 import { NextRequest } from "next/server";
 

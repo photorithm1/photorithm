@@ -1,3 +1,17 @@
+/**
+ * Loading Component
+ *
+ * A full-screen loading overlay that displays a spinning animation.
+ * Used as a loading state for the application while data is being fetched
+ * or operations are being performed.
+ *
+ * Features:
+ * - Full-screen overlay with semi-transparent background
+ * - Centered spinning animation
+ * - Responsive design
+ *
+ * @returns {JSX.Element} The rendered loading overlay
+ */
 "use client";
 import Image from "next/image";
 import React from "react";

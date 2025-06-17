@@ -1,3 +1,16 @@
+/**
+ * Mongoose model for tracking credit purchase transactions in the application.
+ *
+ * This model represents a credit purchase transaction, storing details about
+ * the purchase made through Stripe. Each transaction is linked to a user (buyer)
+ * and records the amount paid, credits purchased, and the specific plan chosen.
+ *
+ * Used in:
+ * - Credit purchase workflow (Checkout component)
+ * - Stripe webhook handling for successful payments
+ * - User credit balance updates
+ */
+
 import { Document, Model, Schema, Types, model, models } from "mongoose";
 
 export interface ITransaction {

@@ -11,6 +11,22 @@ import { DeleteConfirmation } from "@/components/shared/DeleteConfirmation";
 import { notFound } from "next/navigation";
 import { PlaceholderValue } from "next/dist/shared/lib/get-img-props";
 
+/**
+ * Image Details Page Component
+ *
+ * Displays detailed information about a transformed image, including:
+ * - Original and transformed image comparison
+ * - Transformation metadata (type, prompt, color, aspect ratio)
+ * - Owner-specific actions (update, delete)
+ *
+ * Features:
+ * - Image privacy check
+ * - Owner authorization
+ * - Responsive image display
+ * - Download functionality
+ *
+ * @param {SearchParamProps} params - Contains the image ID in the URL
+ */
 const ImageDetails = async ({ params }: SearchParamProps) => {
   const { userId } = await auth();
   const { id } = await params;
