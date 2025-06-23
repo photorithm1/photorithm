@@ -10,14 +10,17 @@ import {
 } from "@/components/ui/dropdown-menu";
 
 export default function ToggleTheme({ className }: { className?: string }) {
-  const { setTheme, theme } = useTheme();
+  const { setTheme, theme, resolvedTheme } = useTheme();
 
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
         <div className={"flex items-center " + className}>
-          <Sun className="h-[24px] w-[24px] rotate-0 fill-accent-foreground scale-100 transition-all dark:-rotate-90 dark:scale-0" />
-          <Moon className="absolute h-[24px] w-[24px] fill-accent-foreground rotate-90 scale-0 transition-all dark:rotate-0 dark:scale-100" />
+          {resolvedTheme === "light" ? (
+            <Sun className="h-[24px] w-[24px] rotate-0 fill-accent-foreground scale-100 transition-all dark:-rotate-90 " />
+          ) : (
+            <Moon className="h-[24px] w-[24px] rotate-0 fill-accent-foreground scale-100 transition-all dark:-rotate-90 " />
+          )}
 
           <span className="text-primary capitalize  font-semibold p-4">{theme}</span>
         </div>
