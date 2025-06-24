@@ -294,7 +294,7 @@
 
 /* Sidebar Component */
 @utility sidebar {
-  @apply hidden min-h-screen  w-72 bg-primary-foreground p-5 shadow-md border shadow-secondary/50 lg:flex overflow-y-scroll max-h-screen;
+  @apply hidden min-h-screen  w-72 bg-primary-foreground p-5 shadow-md border shadow-secondary/50 lg:flex overflow-y-auto max-h-screen;
 }
 
 @utility sidebar-logo {
