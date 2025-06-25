@@ -5,7 +5,8 @@ import { redirect } from "next/navigation";
 import { Collection } from "@/components/shared/Collection";
 import Header from "@/components/shared/Header";
 import { getUserImages, getUserImagesCount } from "@/actions/image.action";
-import { getUserById } from "@/actions/user.action";
+// import { getUserById } from "@/actions/user.action";
+import { getUserByIdCached } from "@/data/user.data";
 
 /**
  * Profile Page Component
@@ -29,7 +30,7 @@ const Profile = async ({ searchParams }: SearchParamProps) => {
 
   if (!userId) redirect("/sign-in");
 
-  const user = await getUserById(userId);
+  const user = await getUserByIdCached(userId);
   const images = await getUserImages({ page, userId: user._id });
 
   return (

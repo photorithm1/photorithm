@@ -1,5 +1,5 @@
 "use server";
-import { revalidatePath } from "next/cache";
+import { revalidatePath, revalidateTag } from "next/cache";
 import { v2 as cloudinary } from "cloudinary";
 import User from "@/database/models/user.model";
 import { connectToDatabase } from "@/database/mongoose";
@@ -65,7 +65,7 @@ export async function updateUser(clerkId: string, user: UpdateUserParams) {
     });
 
     if (!updatedUser) throw new Error("User update failed");
-
+    revalidateTag(`user-${clerkId}`);
     return JSON.parse(JSON.stringify(updatedUser));
   } catch (error) {
     handleError(error);
@@ -119,7 +119,7 @@ export async function deleteUser(clerkId: string) {
 
     // Delete user
     revalidatePath("/");
-
+    revalidateTag(`user-${clerkId}`);
     return deletedUser ? JSON.parse(JSON.stringify(deletedUser)) : null;
   } catch (error) {
     handleError(error);
@@ -151,7 +151,7 @@ export async function updateCredits(userId: string, creditFee: number) {
     );
 
     if (!updatedUserCredits) throw new Error("User credits update failed");
-
+    revalidateTag(`user-${updatedUserCredits.clerkId}`);
     return JSON.parse(JSON.stringify(updatedUserCredits));
   } catch (error) {
     handleError(error);

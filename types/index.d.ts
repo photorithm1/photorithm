@@ -50,7 +50,6 @@ declare type AddImageParams = {
     isPrivate: boolean;
   };
   userId: string;
-  path: string;
 };
 
 /**
@@ -74,7 +73,6 @@ declare type UpdateImageParams = {
     isPrivate?: boolean;
   };
   userId: string;
-  path: string;
 };
 
 /**

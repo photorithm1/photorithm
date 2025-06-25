@@ -85,6 +85,7 @@ export default function TransformationForm({
   const [, startTransition] = useTransition();
   const router = useRouter();
 
+  console.log(creditBalance);
   const initialValues =
     image && action === "Update"
       ? {
@@ -152,7 +153,6 @@ export default function TransformationForm({
         const newImage = await addImage({
           image: imageData,
           userId,
-          path: "/",
         });
         if (newImage) {
           router.push(`/transformations/${newImage._id}`);
@@ -170,7 +170,6 @@ export default function TransformationForm({
             _id: image._id!,
           },
           userId,
-          path: `/transformations/${image._id}`,
         });
         if (updatedImage) {
           router.push(`/transformations/${updatedImage._id}`);
