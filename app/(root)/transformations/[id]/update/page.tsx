@@ -13,15 +13,15 @@ import { notFound, redirect } from "next/navigation";
 import Header from "@/components/shared/Header";
 import TransformationForm from "@/components/shared/TransformationForm";
 import { transformationTypes } from "@/constants";
+import { getUserById } from "@/actions/user.action";
 import { getImageById } from "@/actions/image.action";
-import { getUserByIdCached } from "@/data/user.data";
 
 const Page = async ({ params }: SearchParamProps) => {
   const { userId } = await auth();
 
   if (!userId) redirect("/sign-in");
 
-  const user = await getUserByIdCached(userId);
+  const user = await getUserById(userId);
   const { id } = await params;
   const image = await getImageById(id);
 

@@ -24,15 +24,15 @@ import { redirect } from "next/navigation";
 import Header from "@/components/shared/Header";
 import { Button } from "@/components/ui/button";
 import { plans } from "@/constants";
+import { getUserById } from "@/actions/user.action";
 import Checkout, { InvokeToastForPaymentStatus } from "@/components/shared/Checkout";
-import { getUserByIdCached } from "@/data/user.data";
 
 const Credits = async () => {
   const { userId } = await auth();
 
   if (!userId) redirect("/sign-in");
 
-  const user = await getUserByIdCached(userId);
+  const user = await getUserById(userId);
 
   return (
     <>

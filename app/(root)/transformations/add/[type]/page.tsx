@@ -1,11 +1,10 @@
 import Header from "@/components/shared/Header";
 import TransformationForm from "@/components/shared/TransformationForm";
 import { transformationTypes } from "@/constants";
-// import { getUserById } from "@/actions/user.action";
+import { getUserById } from "@/actions/user.action";
 import { auth } from "@clerk/nextjs/server";
 import { notFound, redirect } from "next/navigation";
 import React from "react";
-import { getUserByIdCached } from "@/data/user.data";
 
 /**
  * Add Transformation Type Page
@@ -40,7 +39,7 @@ export default async function AddTransformationTypePage({ params }: SearchParamP
 
   if (!userId) redirect("/sign-in");
 
-  const user = await getUserByIdCached(userId);
+  const user = await getUserById(userId);
   return (
     <>
       <Header title={transformations.title} subtitle={transformations.subTitle} />

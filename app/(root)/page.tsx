@@ -4,7 +4,6 @@ import { getAllImages } from "@/actions/image.action";
 import Image from "next/image";
 import Link from "next/link";
 import React from "react";
-import { getImagesCached } from "@/data/image.data";
 
 /**
  * Home Page Component
@@ -26,8 +25,8 @@ export default async function Home({ searchParams }: SearchParamProps) {
   const searchParamsResult = await searchParams;
   const page = Number(searchParamsResult?.page) || 1;
   const searchQuery = (searchParamsResult?.query as string) || "";
+  const images = await getAllImages({ page, searchQuery });
 
-  const images = page === 1 && !searchQuery ? await getImagesCached() : await getAllImages({ page, searchQuery });
   return (
     <>
       <section className="home">

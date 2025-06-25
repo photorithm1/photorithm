@@ -1,5 +1,5 @@
 "use server";
-import { revalidateTag } from "next/cache";
+import { revalidatePath } from "next/cache";
 import { connectToDatabase } from "../database/mongoose";
 import { handleError } from "../lib/utils";
 import User from "../database/models/user.model";
@@ -16,7 +16,7 @@ import { v2 as cloudinary } from "cloudinary";
  * @param {string} params.path - The path to revalidate after the image is added.
  * @returns {Promise<TImage | null>} - The newly created image or null on failure.
  */
-export async function addImage({ image, userId }: AddImageParams): Promise<TImage | null> {
+export async function addImage({ image, userId, path }: AddImageParams): Promise<TImage | null> {
   try {
     await connectToDatabase();
 
@@ -29,7 +29,7 @@ export async function addImage({ image, userId }: AddImageParams): Promise<TImag
       author: author._id,
     });
 
-    revalidateTag("home-images");
+    revalidatePath(path);
     return JSON.parse(JSON.stringify(newImage)) as TImage;
   } catch (error) {
     handleError(error);
@@ -46,7 +46,7 @@ export async function addImage({ image, userId }: AddImageParams): Promise<TImag
  * @param {string} params.path - The path to revalidate after the update.
  * @returns {Promise<TImage | null>} - The updated image or null if unauthorized or not found.
  */
-export async function updateImage({ image, userId }: UpdateImageParams): Promise<TImage | null> {
+export async function updateImage({ image, userId, path }: UpdateImageParams): Promise<TImage | null> {
   try {
     await connectToDatabase();
 
@@ -58,7 +58,7 @@ export async function updateImage({ image, userId }: UpdateImageParams): Promise
 
     const updatedImage = await Image.findByIdAndUpdate(image._id, image, { new: true });
 
-    revalidateTag("home-images");
+    revalidatePath(path);
 
     return JSON.parse(JSON.stringify(updatedImage)) as TImage;
   } catch (error) {
