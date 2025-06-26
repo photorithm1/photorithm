@@ -61,11 +61,18 @@ export async function GET() {
 
     return NextResponse.json({ message: "Unwanted resources deleted from cloudinary" }, { status: 200 });
   } catch (error) {
-    console.timeEnd("cleanup");
     console.log("ERROR IN api/cloudinary/cleanup", error);
-    return NextResponse.json({ message: (error as Error).message }, { status: 500 });
+    return NextResponse.json({ errorMessage: (error as Error).message }, { status: 500 });
   } finally {
     console.log("Cleanup function ended...");
     console.timeEnd("cleanup");
   }
 }
+
+export type CleanupApiResponse = {
+  message: string;
+};
+
+export type CleanupApiErrorResponse = {
+  errorMessage: string;
+};

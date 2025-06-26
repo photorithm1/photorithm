@@ -5,7 +5,7 @@ import Link from "next/link";
 import Header from "@/components/shared/Header";
 import TransformedImage from "@/components/shared/TransformedImage";
 import { Button } from "@/components/ui/button";
-import { getImageById } from "@/actions/image.action";
+import { getImageById } from "@/data/image.data";
 import { dataUrl, getImageSize } from "@/lib/utils";
 import { DeleteConfirmation } from "@/components/shared/DeleteConfirmation";
 import { notFound } from "next/navigation";
@@ -34,7 +34,9 @@ const ImageDetails = async ({ params }: SearchParamProps) => {
   try {
     image = await getImageById(id);
     if (!image) notFound();
-    if (typeof image.author === "string") notFound(); // image.author should be of type TUser since getImageById populates author field (This code was to satisfy ts)
+
+    // image.author should be of type TUser since getImageById populates author field (This code was to satisfy ts)
+    if (typeof image.author === "string") notFound();
 
     if (image.isPrivate && image.author.clerkId !== userId) notFound();
 
@@ -42,8 +44,7 @@ const ImageDetails = async ({ params }: SearchParamProps) => {
   } catch (error: unknown) {
     notFound();
   }
-  // console.log(image)
-  // console.log(userId, image.author.clerkId)
+
   return (
     <>
       <Header title={image.title} />

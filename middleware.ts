@@ -31,6 +31,7 @@ const isPublicRoute = createRouteMatcher([
   "/api/cloudinary/cleanup",
   "/",
   "/transformations(.*)",
+  "/api/startup(.*)",
 ]);
 
 export default clerkMiddleware(async (auth: ClerkMiddlewareAuth, request: NextRequest) => {

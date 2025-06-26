@@ -1,5 +1,5 @@
 "use server";
-import { revalidatePath } from "next/cache";
+import { revalidatePath, revalidateTag } from "next/cache";
 import { v2 as cloudinary } from "cloudinary";
 import User from "@/database/models/user.model";
 import { connectToDatabase } from "@/database/mongoose";
@@ -28,26 +28,6 @@ export async function createUser(user: CreateUserParams) {
 }
 
 /**
- * Retrieves a user from the database using their Clerk ID.
- *
- * @param userId - The Clerk ID of the user.
- * @returns The user object if found, or undefined on error.
- */
-export async function getUserById(userId: string) {
-  try {
-    await connectToDatabase();
-
-    const user = await User.findOne({ clerkId: userId });
-
-    if (!user) throw new Error("User not found");
-
-    return JSON.parse(JSON.stringify(user));
-  } catch (error) {
-    handleError(error);
-  }
-}
-
-/**
  * Updates a user document in the database using their Clerk ID.
  *
  * Typically triggered by a Clerk webhook update.
@@ -66,6 +46,7 @@ export async function updateUser(clerkId: string, user: UpdateUserParams) {
 
     if (!updatedUser) throw new Error("User update failed");
 
+    revalidateTag(`user-${clerkId}`);
     return JSON.parse(JSON.stringify(updatedUser));
   } catch (error) {
     handleError(error);
@@ -117,7 +98,7 @@ export async function deleteUser(clerkId: string) {
       });
     }
 
-    // Delete user
+    revalidateTag(`user-${clerkId}`);
     revalidatePath("/");
 
     return deletedUser ? JSON.parse(JSON.stringify(deletedUser)) : null;
@@ -149,7 +130,7 @@ export async function updateCredits(userId: string, creditFee: number) {
       { $inc: { creditBalance: creditFee } },
       { new: true }
     );
-
+    revalidateTag(`user-${updatedUserCredits?.clerkId}`);
     if (!updatedUserCredits) throw new Error("User credits update failed");
 
     return JSON.parse(JSON.stringify(updatedUserCredits));

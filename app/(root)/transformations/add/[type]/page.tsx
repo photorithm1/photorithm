@@ -1,7 +1,8 @@
+import { StartupApiUserErrorResponse, StartupApiUserResponse } from "@/app/api/(private)/startup/user/[id]/route";
 import Header from "@/components/shared/Header";
 import TransformationForm from "@/components/shared/TransformationForm";
 import { transformationTypes } from "@/constants";
-import { getUserById } from "@/actions/user.action";
+// import { getUserById } from "@/actions/user.action";
 import { auth } from "@clerk/nextjs/server";
 import { notFound, redirect } from "next/navigation";
 import React from "react";
@@ -39,7 +40,22 @@ export default async function AddTransformationTypePage({ params }: SearchParamP
 
   if (!userId) redirect("/sign-in");
 
-  const user = await getUserById(userId);
+  const response = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/api/startup/user/${userId}`, {
+    method: "GET",
+    headers: {
+      "x-internal-secret": process.env.INTERNAL_API_SECRET!,
+    },
+    next: { revalidate: 900, tags: [`user-${userId}`] },
+  });
+
+  if (response.status >= 400) {
+    const errorResponse: StartupApiUserErrorResponse = await response.json();
+    throw new Error(errorResponse.errorMessage);
+  }
+
+  const res: StartupApiUserResponse = await response.json();
+  const user = res.data;
+
   return (
     <>
       <Header title={transformations.title} subtitle={transformations.subTitle} />

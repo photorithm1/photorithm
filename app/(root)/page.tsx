@@ -1,9 +1,10 @@
 import { Collection } from "@/components/shared/Collection";
 import { navLinks } from "@/constants";
-import { getAllImages } from "@/actions/image.action";
+import { getAllImages } from "@/data/image.data";
 import Image from "next/image";
 import Link from "next/link";
 import React from "react";
+import { StartupApiImageErrorResponse, StartupApiImageResponse } from "../api/(private)/startup/image/route";
 
 /**
  * Home Page Component
@@ -25,7 +26,25 @@ export default async function Home({ searchParams }: SearchParamProps) {
   const searchParamsResult = await searchParams;
   const page = Number(searchParamsResult?.page) || 1;
   const searchQuery = (searchParamsResult?.query as string) || "";
-  const images = await getAllImages({ page, searchQuery });
+  let images: StartupApiImageResponse["data"];
+
+  if (page === 1 && searchQuery === "") {
+    const response = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/api/startup/image`, {
+      next: { revalidate: 900 },
+      method: "GET",
+      headers: {
+        "x-internal-secret": process.env.INTERNAL_API_SECRET!,
+      },
+    });
+
+    if (response.status >= 400) {
+      const errorResponse: StartupApiImageErrorResponse = await response.json();
+      throw new Error(errorResponse.errorMessage);
+    }
+    images = ((await response.json()) as StartupApiImageResponse).data;
+  } else {
+    images = await getAllImages({ page, searchQuery });
+  }
 
   return (
     <>

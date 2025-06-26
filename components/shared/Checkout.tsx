@@ -4,6 +4,7 @@ import { useEffect } from "react";
 import { checkoutCredits } from "@/actions/transaction.action";
 import { toast } from "sonner";
 import { Button } from "../ui/button";
+import { useUser } from "@clerk/nextjs";
 
 /**
  * Props for the Checkout component
@@ -17,7 +18,6 @@ type CheckoutProps = {
   /** Number of credits to be purchased */
   credits: number;
   /** ID of the user making the purchase */
-  buyerId: string;
 };
 
 /**
@@ -36,13 +36,16 @@ type CheckoutProps = {
  * This component is used in the credits page to allow users
  * to purchase additional credits for image transformations.
  */
-const Checkout = ({ plan, amount, credits, buyerId }: CheckoutProps) => {
+const Checkout = ({ plan, amount, credits }: CheckoutProps) => {
+  const { user, isLoaded } = useUser();
+  const buyerId = user?.publicMetadata.userId as string;
+  console.log(buyerId);
   const onCheckout = async () => {
     const transaction: CheckoutTransactionParams = {
+      buyerId,
       plan,
       amount,
       credits,
-      buyerId,
       cancelURL: `${location.origin}/credits?success=false`,
       successURL: `${location.origin}/credits?success=true`,
     };
@@ -53,7 +56,7 @@ const Checkout = ({ plan, amount, credits, buyerId }: CheckoutProps) => {
   return (
     <form action={onCheckout} method="POST">
       <section>
-        <Button type="submit" role="link" className="w-full rounded-full cursor-pointer  bg-cover">
+        <Button type="submit" disabled={!isLoaded} role="link" className="w-full rounded-full cursor-pointer  bg-cover">
           Buy Credit
         </Button>
       </section>

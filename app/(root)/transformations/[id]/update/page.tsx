@@ -13,8 +13,8 @@ import { notFound, redirect } from "next/navigation";
 import Header from "@/components/shared/Header";
 import TransformationForm from "@/components/shared/TransformationForm";
 import { transformationTypes } from "@/constants";
-import { getUserById } from "@/actions/user.action";
-import { getImageById } from "@/actions/image.action";
+import { getUserById } from "@/data/user.data";
+import { getImageById } from "@/data/image.data";
 
 const Page = async ({ params }: SearchParamProps) => {
   const { userId } = await auth();
@@ -25,7 +25,8 @@ const Page = async ({ params }: SearchParamProps) => {
   const { id } = await params;
   const image = await getImageById(id);
 
-  if (!image || typeof image.author === "string") notFound(); // author is populated in  getUserById, this is just to satisfy typescript
+  // author is populated in  getUserById, this is just to satisfy typescript
+  if (!image || typeof image.author === "string") notFound();
 
   if (image.author.clerkId !== userId) {
     notFound();
