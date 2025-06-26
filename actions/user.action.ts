@@ -71,8 +71,8 @@ export async function deleteUser(clerkId: string) {
     session.startTransaction();
     const deletedUser = await User.findOneAndDelete({ clerkId }).session(session);
     if (!deletedUser) {
-      session.abortTransaction();
-      session.endSession();
+      await session.abortTransaction();
+      await session.endSession();
       throw new Error("User not found");
     }
     const publicIdsOfImagesToRemove = (await Image.find({ author: deletedUser._id }).session(session)).map(
@@ -80,8 +80,8 @@ export async function deleteUser(clerkId: string) {
     );
 
     await Image.deleteMany({ author: deletedUser._id }).session(session);
-    session.commitTransaction();
-    session.endSession();
+    await session.commitTransaction();
+    await session.endSession();
 
     // even if cloudinary deletion operation fails, api/cloudinary/cleanup route will handel the cleanup
     cloudinary.config({
