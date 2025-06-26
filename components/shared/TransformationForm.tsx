@@ -84,7 +84,7 @@ export default function TransformationForm({
   const [error, setError] = useState<Error | null>(null);
   const [, startTransition] = useTransition();
   const router = useRouter();
-
+  console.log(creditBalance);
   const initialValues =
     image && action === "Update"
       ? {
@@ -236,6 +236,20 @@ export default function TransformationForm({
       });
       return;
     }
+
+    /**
+     if user didn't picked color and apply transformation without setting recolor.to property 
+     then TransformedImage component will throw error. Comment the if block to find out😁
+     */
+    if (type === "recolor" && !newTransformation?.recolor?.to) {
+      toast.error("No color chosen", {
+        description: <div className="text-primary">Please pick a color</div>,
+        duration: 5000,
+      });
+      return;
+    }
+
+    setError(null);
 
     if (type === "fill") {
       const imageSize = aspectRatioOptions[selectFieldValue!];
