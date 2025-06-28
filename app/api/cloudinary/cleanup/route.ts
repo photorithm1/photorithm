@@ -21,6 +21,7 @@
  * - Increase frequency for higher-traffic applications.
  */
 import Image from "@/database/models/image.model";
+import { connectToDatabase } from "@/database/mongoose";
 import { v2 as cloudinary, ResourceApiResponse } from "cloudinary";
 import { NextResponse } from "next/server";
 
@@ -28,6 +29,7 @@ export async function GET() {
   console.time("cleanup");
   console.log("Cleanup function started...");
   try {
+    await connectToDatabase();
     const images = await Image.find();
     const publicIds: string[] = images.map(image => image.publicId);
 
