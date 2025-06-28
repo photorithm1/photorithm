@@ -4,7 +4,6 @@ import { useEffect } from "react";
 import { checkoutCredits } from "@/actions/transaction.action";
 import { toast } from "sonner";
 import { Button } from "../ui/button";
-import { useUser } from "@clerk/nextjs";
 
 /**
  * Props for the Checkout component
@@ -18,6 +17,8 @@ type CheckoutProps = {
   /** Number of credits to be purchased */
   credits: number;
   /** ID of the user making the purchase */
+  buyerId: string;
+  /** mongodb _id of user */
 };
 
 /**
@@ -36,11 +37,19 @@ type CheckoutProps = {
  * This component is used in the credits page to allow users
  * to purchase additional credits for image transformations.
  */
-const Checkout = ({ plan, amount, credits }: CheckoutProps) => {
-  const { user, isLoaded } = useUser();
-  const buyerId = user?.publicMetadata.userId as string;
+const Checkout = ({ plan, amount, credits, buyerId }: CheckoutProps) => {
   console.log(buyerId);
   const onCheckout = async () => {
+    if (!buyerId) {
+      toast.error("Error loading user", {
+        closeButton: true,
+        description: (
+          <div className="text-primary">Please try again later, if issue persists then contact the developer</div>
+        ),
+        duration: 10000,
+      });
+      return;
+    }
     const transaction: CheckoutTransactionParams = {
       buyerId,
       plan,
@@ -56,7 +65,7 @@ const Checkout = ({ plan, amount, credits }: CheckoutProps) => {
   return (
     <form action={onCheckout} method="POST">
       <section>
-        <Button type="submit" disabled={!isLoaded} role="link" className="w-full rounded-full cursor-pointer  bg-cover">
+        <Button type="submit" disabled={!buyerId} role="link" className="w-full rounded-full cursor-pointer  bg-cover">
           Buy Credit
         </Button>
       </section>

@@ -23,8 +23,29 @@ import Header from "@/components/shared/Header";
 import { Button } from "@/components/ui/button";
 import { plans } from "@/constants";
 import Checkout, { InvokeToastForPaymentStatus } from "@/components/shared/Checkout";
+import { auth } from "@clerk/nextjs/server";
+import { redirect } from "next/navigation";
+import { StartupApiUserErrorResponse, StartupApiUserResponse } from "@/app/api/(private)/startup/user/[id]/route";
 
-const Credits = () => {
+const Credits = async () => {
+  const { userId } = await auth();
+  if (!userId) {
+    redirect("/sign-in");
+  }
+  const response = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/api/startup/user/${userId}`, {
+    method: "GET",
+    headers: {
+      "x-internal-secret": process.env.INTERNAL_API_SECRET!,
+    },
+    next: { revalidate: 900, tags: [`user-${userId}`] },
+  });
+
+  if (response.status >= 400) {
+    const errorResponse: StartupApiUserErrorResponse = await response.json();
+    throw new Error(errorResponse.errorMessage);
+  }
+  const user: StartupApiUserResponse = await response.json();
+
   return (
     <>
       <InvokeToastForPaymentStatus />
@@ -63,7 +84,7 @@ const Credits = () => {
                 </Button>
               ) : (
                 <SignedIn>
-                  <Checkout plan={plan.name} amount={plan.price} credits={plan.credits} />
+                  <Checkout plan={plan.name} amount={plan.price} credits={plan.credits} buyerId={user.data._id} />
                 </SignedIn>
               )}
             </li>
