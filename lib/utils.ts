@@ -210,6 +210,8 @@ export function removeKeysFromQuery({ searchParams, keysToRemove }: RemoveUrlQue
   return `${window.location.pathname}?${qs.stringify(currentUrl)}`;
 }
 
+export type AspectRatioKey = keyof typeof aspectRatioOptions;
+
 // GE IMAGE SIZE
 /**
  * Calculates image dimensions based on transformation type and aspect ratio.
@@ -229,7 +231,6 @@ export function removeKeysFromQuery({ searchParams, keysToRemove }: RemoveUrlQue
  * // Returns: 600 (original height)
  * ```
  */
-export type AspectRatioKey = keyof typeof aspectRatioOptions;
 export const getImageSize = (type: string, image: TImage, dimension: "width" | "height"): number => {
   if (type === "fill") {
     return aspectRatioOptions[image.aspectRatio as AspectRatioKey]?.[dimension] || 1000;

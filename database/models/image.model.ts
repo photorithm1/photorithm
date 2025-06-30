@@ -21,6 +21,7 @@
  * - Transformation details and preview
  */
 
+import { AspectRatioKey } from "@/lib/utils";
 import { Document, Model, Schema, model, models, Types } from "mongoose";
 
 export interface IImage {
@@ -31,10 +32,9 @@ export interface IImage {
   secureURL: string;
   width?: number; // Optional property
   height?: number; // Optional property
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  config?: any; // Optional object property, type can't be determined from schema
+  config?: Transformations; // Optional object property, type can't be determined from schema
   transformationUrl?: URL; // Optional property
-  aspectRatio?: string; // Optional property
+  aspectRatio?: AspectRatioKey; // Optional property
   color?: string; // Optional property
   prompt?: string; // Optional property
   author?: Types.ObjectId; // Reference to user, similar to foreign key
